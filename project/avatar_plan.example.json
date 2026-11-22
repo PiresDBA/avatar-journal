@@ -1,0 +1,129 @@
+{
+  "version": "1.0",
+  "duration_seconds": 18.0,
+  "fps": 30,
+  "layout": {
+    "width": 1080,
+    "height": 1920,
+    "split_y": 1056,
+    "split_height": 864,
+    "captions_y_split": 950,
+    "captions_y_full": 1390,
+    "bottom_safe_margin_px": 300
+  },
+  "speech_blocks": [
+    [
+      0.0,
+      6.0
+    ],
+    [
+      9.5,
+      12.0
+    ],
+    [
+      14.5,
+      18.0
+    ]
+  ],
+  "segments": [
+    {
+      "id": "seg_1_hook_avatar",
+      "scene_id": "scene_1",
+      "start": 0.0,
+      "end": 2.5,
+      "mode": "full_avatar",
+      "clip": "speaking",
+      "media_start": 0.0,
+      "zoom": {
+        "from": 1.0,
+        "to": 1.05
+      },
+      "media_override": "assets/avatar/liveportrait/seg_1_hook_avatar.mp4",
+      "lip_engine": "liveportrait"
+    },
+    {
+      "id": "seg_2_headline_split",
+      "scene_id": "scene_1",
+      "start": 2.5,
+      "end": 6.0,
+      "mode": "split",
+      "clip": "speaking",
+      "media_start": 0.0,
+      "media_override": "assets/avatar/liveportrait/seg_2_headline_split.mp4",
+      "lip_engine": "liveportrait"
+    },
+    {
+      "id": "seg_3_data_full_gfx",
+      "scene_id": "scene_2",
+      "start": 6.0,
+      "end": 9.5,
+      "mode": "full_graphics",
+      "clip": null
+    },
+    {
+      "id": "seg_4_data_split_point",
+      "scene_id": "scene_2",
+      "start": 9.5,
+      "end": 12.0,
+      "mode": "split",
+      "clip": "pointing",
+      "media_start": 0.0,
+      "media_override": "assets/avatar/liveportrait/seg_4_data_split_point.mp4",
+      "lip_engine": "liveportrait"
+    },
+    {
+      "id": "seg_5_terminal_full_gfx",
+      "scene_id": "scene_3",
+      "start": 12.0,
+      "end": 14.5,
+      "mode": "full_graphics",
+      "clip": null,
+      "graphics": {
+        "type": "terminal_full",
+        "command": "$ mai-code fix --repo",
+        "note": "B-roll lateral removido; terminal do MAI Code 2 em tela cheia (1080x1920)."
+      }
+    },
+    {
+      "id": "seg_6_terminal_split",
+      "scene_id": "scene_3",
+      "start": 14.5,
+      "end": 16.5,
+      "mode": "split",
+      "clip": "idle",
+      "media_start": 0.0,
+      "media_override": "assets/avatar/liveportrait/seg_6_terminal_split.mp4",
+      "lip_engine": "liveportrait"
+    },
+    {
+      "id": "seg_7_outro_avatar",
+      "scene_id": "scene_3",
+      "start": 16.5,
+      "end": 17.36,
+      "mode": "full_avatar",
+      "clip": "speaking",
+      "media_start": 0.0,
+      "lip_sync": true,
+      "note": "Wav2Lip até o fim da fala (17.32).",
+      "media_override": "assets/avatar/liveportrait/seg_7_outro_avatar.mp4",
+      "lip_engine": "liveportrait"
+    },
+    {
+      "id": "seg_8_closed_hold",
+      "scene_id": "scene_3",
+      "start": 17.36,
+      "end": 18.0,
+      "mode": "full_avatar",
+      "clip": "idle",
+      "media_start": 0.0,
+      "media_override": "assets/avatar/neutral_hold_full.mp4",
+      "lip_sync": false,
+      "fade_in": 0.08,
+      "zoom": {
+        "from": 1.0,
+        "to": 1.02
+      },
+      "note": "Hold neutro de boca fechada (idle 9.5-10.0, alinhado); dissolve de 0.08s apos a ultima palavra."
+    }
+  ]
+}

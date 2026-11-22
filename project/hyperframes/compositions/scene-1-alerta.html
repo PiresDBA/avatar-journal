@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cena 1 — Alerta Kinetic Split-Screen 2.5–6.0s (howdevelop-733090)</title>
+  </head>
+  <body>
+    <template id="scene-1-alerta-template">
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          font-family: Outfit, Inter, system-ui, sans-serif;
+          color: #f8fafc;
+        }
+        /* Fundo restrito à metade superior 55% (0..1056px) */
+        #s1-bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1080px;
+          height: 1056px;
+          overflow: hidden;
+          background: #090c12;
+        }
+        #s1-grid {
+          position: absolute;
+          inset: 0;
+          background-image:
+            linear-gradient(to right, rgba(56, 189, 248, 0.07) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(56, 189, 248, 0.07) 1px, transparent 1px);
+          background-size: 90px 90px;
+        }
+        #s1-glow-a {
+          position: absolute;
+          left: -140px;
+          top: 80px;
+          width: 640px;
+          height: 640px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(56, 189, 248, 0.24) 0%, rgba(9, 12, 18, 0) 70%);
+        }
+        #s1-glow-b {
+          position: absolute;
+          right: -120px;
+          top: 380px;
+          width: 560px;
+          height: 560px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(245, 158, 11, 0.16) 0%, rgba(9, 12, 18, 0) 70%);
+        }
+        /* Palco restrito a y: 124..934px (810px úteis acima das legendas em 950px) */
+        #s1-stage {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          padding: 124px 52px 986px 52px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          gap: 18px;
+        }
+        #s1-meta-row {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+        #s1-prompt-bar {
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          padding: 11px 20px;
+          border-radius: 12px;
+          background: #111827;
+          border: 2px solid #1e293b;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 22px;
+          font-weight: 700;
+          color: #38bdf8;
+          letter-spacing: 0.04em;
+        }
+        #s1-cursor {
+          display: inline-block;
+          width: 12px;
+          height: 24px;
+          background: #f59e0b;
+          border-radius: 2px;
+        }
+        #s1-alert-pill {
+          display: inline-block;
+          padding: 11px 22px;
+          border-radius: 10px;
+          background: #f59e0b;
+          color: #090c12;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 22px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+        }
+        #s1-hero-stack {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .s1-headline-line {
+          margin: 0;
+          font-family: Outfit, sans-serif;
+          font-size: 92px;
+          font-weight: 900;
+          line-height: 0.94;
+          letter-spacing: -0.03em;
+          color: #f8fafc;
+        }
+        #s1-line-accent {
+          color: #38bdf8;
+        }
+        #s1-subline {
+          margin: 4px 0 0 0;
+          font-family: Inter, sans-serif;
+          font-size: 30px;
+          font-weight: 600;
+          line-height: 1.24;
+          color: #cbd5e1;
+          max-width: 940px;
+        }
+        #s1-network-card {
+          position: relative;
+          width: 100%;
+          height: 400px;
+          margin-top: 4px;
+          border-radius: 24px;
+          background: #0f1623;
+          border: 2px solid #1e293b;
+          padding: 24px 24px;
+          overflow: hidden;
+        }
+        #s1-net-svg {
+          position: absolute;
+          inset: 0;
+          width: 976px;
+          height: 400px;
+        }
+        #s1-node-cards {
+          position: relative;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          height: 100%;
+          gap: 24px;
+        }
+        .s1-branch-box {
+          width: 448px;
+          padding: 20px 24px;
+          border-radius: 18px;
+          background: #162033;
+          border: 2px solid #293854;
+        }
+        .s1-branch-tag {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 20px;
+          font-weight: 700;
+          color: #38bdf8;
+          margin-bottom: 6px;
+        }
+        #s1-b2-tag {
+          color: #fbbf24;
+        }
+        .s1-branch-title {
+          font-family: Outfit, sans-serif;
+          font-size: 34px;
+          font-weight: 800;
+          color: #f8fafc;
+          line-height: 1.12;
+        }
+        .s1-branch-meta {
+          margin-top: 6px;
+          font-family: Inter, sans-serif;
+          font-size: 23px;
+          font-weight: 600;
+          color: #cbd5e1;
+        }
+        #s1-origin-hub {
+          position: absolute;
+          left: 438px;
+          top: 22px;
+          width: 100px;
+          height: 44px;
+          border-radius: 999px;
+          background: #38bdf8;
+          color: #090c12;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 21px;
+          font-weight: 700;
+        }
+      </style>
+
+      <div id="root" data-composition-id="scene-1-alerta" data-width="1080" data-height="1920">
+        <!-- Fundo full-bleed restrito ao painel superior 0..1056px -->
+        <div id="s1-bg" data-layout-ignore>
+          <div id="s1-grid" data-layout-ignore></div>
+          <div id="s1-glow-a" data-layout-ignore></div>
+          <div id="s1-glow-b" data-layout-ignore></div>
+        </div>
+
+        <div id="s1-stage">
+          <div id="s1-meta-row">
+            <div id="s1-prompt-bar">
+              <span>&gt; AI_PULSE // NOV.2026</span>
+              <span id="s1-cursor" data-layout-ignore></span>
+            </div>
+            <div id="s1-alert-pill">ALERTA DEV</div>
+          </div>
+
+          <div id="s1-hero-stack">
+            <h1 id="s1-line-1" class="s1-headline-line">2 VIRADAS</h1>
+            <h1 id="s1-line-accent" class="s1-headline-line">EM IA HOJE</h1>
+            <p id="s1-subline">Contexto gigante mais barato e agentes direto no terminal.</p>
+          </div>
+
+          <div id="s1-network-card">
+            <svg id="s1-net-svg" viewBox="0 0 976 400" fill="none" data-layout-ignore>
+              <path
+                id="s1-path-left"
+                d="M 488 68 C 488 152, 232 132, 232 212"
+                stroke="#38BDF8"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+              <path
+                id="s1-path-right"
+                d="M 488 68 C 488 152, 744 132, 744 212"
+                stroke="#F59E0B"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+            </svg>
+
+            <div id="s1-origin-hub">SINAL</div>
+
+            <div id="s1-node-cards">
+              <div id="s1-branch-1" class="s1-branch-box">
+                <div class="s1-branch-tag">01 // MODELO</div>
+                <div class="s1-branch-title">Claude Fable 5.2</div>
+                <div class="s1-branch-meta">1M tokens · +30% veloz</div>
+              </div>
+              <div id="s1-branch-2" class="s1-branch-box">
+                <div id="s1-b2-tag" class="s1-branch-tag">02 // AGENTE</div>
+                <div class="s1-branch-title">MAI Code 2</div>
+                <div class="s1-branch-meta">Copilot IDE + Terminal</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // Entrada rápida dentro dos primeiros 0.25s para o segmento split de 3.5s (2.5-6.0s global)
+        tl.fromTo(
+          "#s1-meta-row",
+          { y: -16, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.18, ease: "power3.out" },
+          0.0
+        );
+        tl.fromTo(
+          "#s1-line-1",
+          { x: -38, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.2, ease: "power4.out" },
+          0.03
+        );
+        tl.fromTo(
+          "#s1-line-accent",
+          { x: 38, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.2, ease: "power4.out" },
+          0.07
+        );
+        tl.fromTo(
+          "#s1-subline",
+          { y: 12, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.18, ease: "power2.out" },
+          0.12
+        );
+        tl.fromTo(
+          "#s1-network-card",
+          { y: 20, opacity: 0, scale: 0.97 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.2, ease: "power3.out" },
+          0.16
+        );
+        tl.fromTo(
+          "#s1-origin-hub",
+          { scale: 0.72, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.18, ease: "back.out(1.8)" },
+          0.22
+        );
+
+        // Pulso determinístico finito limitado a 3.2s
+        tl.to(
+          "#s1-cursor",
+          {
+            opacity: 0.15,
+            duration: 0.25,
+            ease: "steps(1)",
+            yoyo: true,
+            repeat: Math.max(0, Math.floor(3.1 / 0.25) - 1),
+          },
+          0.1
+        );
+
+        // Ramificação de rede rápida completando até 0.95s
+        ["#s1-path-left", "#s1-path-right"].forEach(function (sel, idx) {
+          const p = document.querySelector(sel);
+          const len = p && p.getTotalLength ? p.getTotalLength() : 300;
+          gsap.set(p, { strokeDasharray: len, strokeDashoffset: len });
+          tl.fromTo(
+            p,
+            { strokeDashoffset: len },
+            { strokeDashoffset: 0, duration: 0.45, ease: "power2.inOut" },
+            0.26 + idx * 0.12
+          );
+        });
+
+        tl.fromTo(
+          "#s1-branch-1",
+          { y: 18, opacity: 0, scale: 0.95 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.4)" },
+          0.45
+        );
+        tl.fromTo(
+          "#s1-branch-2",
+          { y: 18, opacity: 0, scale: 0.95 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.4)" },
+          0.65
+        );
+
+        tl.to(
+          "#s1-glow-a",
+          {
+            scale: 1.08,
+            duration: 1.4,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: Math.max(0, Math.floor(3.2 / 1.4) - 1),
+          },
+          0.0
+        );
+
+        window.__timelines["scene-1-alerta"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,290 @@
+<!doctype html>
+<html
+  lang="pt-BR"
+  data-composition-variables='[{"id":"avatarMode","type":"enum","label":"Avatar Mode","default":"director","options":[{"value":"director","label":"Dynamic Layout Director"},{"value":"fallback","label":"Fallback Studio"},{"value":"image","label":"Local Image"},{"value":"video","label":"Local Video Loop"}]},{"id":"avatarLabel","type":"string","label":"Avatar Slot Label","default":"AVATAR LOCAL"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Chrome Diretor Dinâmico (full_avatar · split · full_graphics · broll)</title>
+  </head>
+  <body>
+    <template id="chrome-pip-template">
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          pointer-events: none;
+          font-family: "JetBrains Mono", Inter, sans-serif;
+        }
+        /* Barra superior editorial compacta (y: 44..104px) */
+        #pip-top-bar {
+          position: absolute;
+          left: 44px;
+          right: 44px;
+          top: 44px;
+          height: 60px;
+          border-radius: 14px;
+          background: rgba(10, 14, 22, 0.94);
+          border: 2px solid #27344d;
+          padding: 0 22px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          color: #f8fafc;
+          z-index: 4;
+        }
+        #pip-brand-left {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-size: 20px;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+        }
+        #pip-live-dot {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: #ef4444;
+        }
+        #pip-time-badge {
+          font-size: 18px;
+          font-weight: 700;
+          color: #38bdf8;
+        }
+        #pip-progress-track {
+          position: absolute;
+          left: 20px;
+          right: 20px;
+          bottom: 5px;
+          height: 3px;
+          border-radius: 999px;
+          background: #1e293b;
+          overflow: hidden;
+        }
+        #pip-progress-fill {
+          display: block;
+          width: 100%;
+          height: 3px;
+          background: #38bdf8;
+          transform-origin: left center;
+        }
+
+        /* Vinheta cinematográfica sutil em full_avatar e broll para legibilidade */
+        #cinema-vignette {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            to bottom,
+            rgba(6, 10, 18, 0.56) 0%,
+            rgba(6, 10, 18, 0.08) 22%,
+            rgba(6, 10, 18, 0.06) 54%,
+            rgba(6, 10, 18, 0.72) 100%
+          );
+          opacity: 0;
+          z-index: 1;
+        }
+
+        /* Linha divisória verde-esmeralda/ciano 2px separando motion graphic e avatar em split */
+        #split-divider {
+          position: absolute;
+          left: 0;
+          top: 1055px;
+          width: 1080px;
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(16, 185, 129, 0.45) 0%,
+            #10b981 24%,
+            #22d3ee 50%,
+            #10b981 76%,
+            rgba(16, 185, 129, 0.45) 100%
+          );
+          box-shadow: 0 0 14px rgba(16, 185, 129, 0.6);
+          opacity: 0;
+          z-index: 3;
+        }
+        #split-top-shadow {
+          position: absolute;
+          left: 0;
+          top: 1057px;
+          width: 1080px;
+          height: 44px;
+          background: linear-gradient(to bottom, rgba(6, 10, 18, 0.42), rgba(6, 10, 18, 0));
+          opacity: 0;
+          z-index: 2;
+        }
+
+        /* Badge editorial de fechamento acima das legendas em 16.5-18.0s (fora dos últimos 300px) */
+        #outro-lockup {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 1280px;
+          margin: 0 auto;
+          width: fit-content;
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 26px;
+          border-radius: 999px;
+          background: rgba(9, 13, 22, 0.92);
+          border: 2px solid #10b981;
+          color: #f8fafc;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 22px;
+          font-weight: 700;
+          letter-spacing: 0.05em;
+          box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
+          opacity: 0;
+          z-index: 4;
+        }
+        #outro-dot {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: #10b981;
+        }
+
+        /* Fallback determinístico limpo caso algum clipe local esteja ausente */
+        #avatar-fallback-panel {
+          position: absolute;
+          left: 0;
+          top: 1056px;
+          width: 1080px;
+          height: 864px;
+          background: #0c1220;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding-bottom: 180px;
+          gap: 20px;
+          opacity: 0;
+          z-index: 1;
+        }
+        #fallback-avatar-svg {
+          width: 180px;
+          height: 180px;
+        }
+        #fallback-slot-badge {
+          padding: 8px 22px;
+          border-radius: 999px;
+          background: #111827;
+          border: 2px solid #10b981;
+          color: #f8fafc;
+          font-size: 20px;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+        }
+      </style>
+
+      <div id="root" data-composition-id="chrome-pip" data-width="1080" data-height="1920">
+        <div id="cinema-vignette" data-layout-ignore></div>
+
+        <div id="pip-top-bar">
+          <div id="pip-brand-left">
+            <span id="pip-live-dot" data-layout-ignore></span>
+            <span>BOLETIM IA · DEV</span>
+          </div>
+          <div id="pip-time-badge">00:18 · 9:16</div>
+          <div id="pip-progress-track" data-layout-ignore>
+            <div id="pip-progress-fill"></div>
+          </div>
+        </div>
+
+        <div id="avatar-fallback-panel" data-layout-ignore>
+          <svg id="fallback-avatar-svg" viewBox="0 0 120 120" fill="none" data-layout-ignore>
+            <circle cx="60" cy="42" r="21" fill="#10B981" fill-opacity="0.25" stroke="#10B981" stroke-width="3" />
+            <path
+              d="M24 102C24 81 40 70 60 70C80 70 96 81 96 102"
+              fill="#10B981"
+              fill-opacity="0.2"
+              stroke="#10B981"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+          </svg>
+          <div id="fallback-slot-badge">AVATAR LOCAL</div>
+        </div>
+
+        <div id="split-top-shadow" data-layout-ignore></div>
+        <div id="split-divider" data-layout-ignore></div>
+
+        <div id="outro-lockup">
+          <span id="outro-dot" data-layout-ignore></span>
+          <span>BOLETIM IA · ATÉ AMANHÃ</span>
+        </div>
+      </div>
+
+      <script>
+        /* AVATAR_PLAN_DATA_START */
+        const AVATAR_SEGMENTS = [{"id": "seg_1_hook_avatar", "start": 0.0, "end": 2.5, "mode": "full_avatar", "clip": "speaking", "has_media": true}, {"id": "seg_2_headline_split", "start": 2.5, "end": 6.0, "mode": "split", "clip": "speaking", "has_media": true}, {"id": "seg_3_data_full_gfx", "start": 6.0, "end": 9.5, "mode": "full_graphics", "clip": null, "has_media": false}, {"id": "seg_4_data_split_point", "start": 9.5, "end": 12.0, "mode": "split", "clip": "pointing", "has_media": true}, {"id": "seg_5_terminal_full_gfx", "start": 12.0, "end": 14.5, "mode": "full_graphics", "clip": null, "has_media": false}, {"id": "seg_6_terminal_split", "start": 14.5, "end": 16.5, "mode": "split", "clip": "idle", "has_media": true}, {"id": "seg_7_outro_avatar", "start": 16.5, "end": 17.36, "mode": "full_avatar", "clip": "speaking", "has_media": true}, {"id": "seg_8_closed_hold", "start": 17.36, "end": 18.0, "mode": "full_avatar", "clip": "idle", "has_media": true}];
+        /* AVATAR_PLAN_DATA_END */
+
+        const vars =
+          window.__hyperframes && typeof window.__hyperframes.getVariables === "function"
+            ? window.__hyperframes.getVariables()
+            : {};
+        const avatarMode = vars.avatarMode || "director";
+        const avatarLabel = vars.avatarLabel || "AVATAR LOCAL";
+        const fallbackBadge = document.getElementById("fallback-slot-badge");
+        if (fallbackBadge) {
+          fallbackBadge.textContent = avatarLabel;
+        }
+
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // Barra de progresso global 0s -> 18s (linear determinístico)
+        tl.fromTo(
+          "#pip-progress-fill",
+          { scaleX: 0 },
+          { scaleX: 1, duration: 18, ease: "none" },
+          0
+        );
+
+        // Pulso determinístico finito no indicador LIVE
+        tl.to(
+          "#pip-live-dot",
+          {
+            opacity: 0.3,
+            duration: 0.6,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: Math.max(0, Math.floor(17.5 / 0.6) - 1),
+          },
+          0.0
+        );
+
+        // Estado determinístico por trecho (split / full_avatar / broll / full_graphics)
+        if (avatarMode === "fallback") {
+          tl.set("#avatar-fallback-panel", { opacity: 1 }, 0);
+        } else {
+          AVATAR_SEGMENTS.forEach(function (seg) {
+            const isSplit = seg.mode === "split";
+            const vigOp = seg.mode === "broll" ? 1 : seg.mode === "full_avatar" ? 0.65 : 0;
+            const fbOp = seg.mode !== "full_graphics" && seg.has_media === false ? 1 : 0;
+            tl.set("#split-divider", { opacity: isSplit ? 1 : 0 }, seg.start);
+            tl.set("#split-top-shadow", { opacity: isSplit ? 1 : 0 }, seg.start);
+            tl.set("#cinema-vignette", { opacity: vigOp }, seg.start);
+            tl.set("#avatar-fallback-panel", { opacity: fbOp }, seg.start);
+          });
+        }
+
+        // Badge editorial de encerramento no full_avatar final (16.55s -> 18s)
+        tl.fromTo(
+          "#outro-lockup",
+          { y: 14, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.25, ease: "power2.out" },
+          16.55
+        );
+
+        window.__timelines["chrome-pip"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

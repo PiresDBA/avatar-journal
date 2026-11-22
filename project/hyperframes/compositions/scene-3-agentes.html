@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cena 3 — Terminal Warm-Gray Split-Screen 14.5–16.5s (morse-369333)</title>
+  </head>
+  <body>
+    <template id="scene-3-agentes-template">
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          font-family: Inter, Outfit, system-ui, sans-serif;
+          color: #111318;
+        }
+        /* Inversão de polaridade restrita ao painel superior 55% (0..1056px) */
+        #s3-bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1080px;
+          height: 1056px;
+          overflow: hidden;
+          background: #f3f1ec;
+        }
+        #s3-dot-field {
+          position: absolute;
+          inset: 0;
+          background-image: radial-gradient(rgba(17, 19, 24, 0.11) 1.5px, transparent 1.5px);
+          background-size: 32px 32px;
+        }
+        #s3-frame-rule {
+          position: absolute;
+          inset: 16px 20px 16px 20px;
+          border: 2px solid rgba(17, 19, 24, 0.16);
+          border-radius: 24px;
+        }
+        /* Palco restrito a y: 124..934px (810px úteis acima das legendas em 950px) */
+        #s3-stage {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          padding: 124px 52px 986px 52px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          gap: 20px;
+        }
+        #s3-head {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        #s3-kicker {
+          align-self: flex-start;
+          padding: 8px 18px;
+          border-radius: 10px;
+          background: #111318;
+          color: #f3f1ec;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 20px;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+        }
+        #s3-title {
+          margin: 0;
+          font-family: Outfit, sans-serif;
+          font-size: 68px;
+          font-weight: 900;
+          line-height: 0.98;
+          color: #111318;
+        }
+        #s3-subtitle {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 24px;
+          font-weight: 700;
+          color: #b8330a;
+        }
+        /* Shell UI preto/branco de paleta ⌘K -> Terminal autônomo */
+        #s3-terminal-shell {
+          position: relative;
+          width: 100%;
+          border-radius: 24px;
+          background: #111318;
+          color: #ffffff;
+          border: 3px solid #111318;
+          padding: 26px 28px;
+          display: flex;
+          flex-direction: column;
+          gap: 18px;
+          box-shadow: 0 22px 44px rgba(17, 19, 24, 0.16);
+        }
+        #s3-cmd-palette {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 15px 20px;
+          border-radius: 14px;
+          background: #1d212b;
+          border: 2px solid #2e3444;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 24px;
+          font-weight: 700;
+          color: #ffffff;
+        }
+        #s3-cmd-shortcut {
+          padding: 6px 14px;
+          border-radius: 8px;
+          background: #c83e12;
+          color: #ffffff;
+          font-size: 21px;
+        }
+        #s3-log-lines {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 22px;
+          font-weight: 500;
+          color: #e2e8f0;
+        }
+        #s3-log-3 {
+          color: #4ade80;
+          font-weight: 700;
+        }
+        #s3-progress-track {
+          display: block;
+          width: 100%;
+          height: 14px;
+          border-radius: 999px;
+          background: #252a36;
+          overflow: hidden;
+        }
+        #s3-progress-fill {
+          display: block;
+          width: 100%;
+          height: 14px;
+          border-radius: 999px;
+          background: #c83e12;
+          transform-origin: left center;
+        }
+        /* Cards Bento KPI abaixo do terminal */
+        #s3-bento-row {
+          display: flex;
+          gap: 20px;
+          width: 100%;
+        }
+        .s3-kpi-card {
+          flex: 1;
+          border-radius: 22px;
+          padding: 24px 28px;
+          border: 3px solid #111318;
+        }
+        #s3-kpi-left {
+          background: #ffffff;
+          color: #111318;
+        }
+        #s3-kpi-right {
+          background: #c83e12;
+          color: #ffffff;
+        }
+        .s3-kpi-num {
+          font-family: Outfit, sans-serif;
+          font-size: 72px;
+          font-weight: 900;
+          line-height: 1;
+        }
+        .s3-kpi-lbl {
+          margin-top: 8px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 22px;
+          font-weight: 700;
+        }
+        #s3-cursor {
+          position: absolute;
+          right: 48px;
+          top: 38px;
+          width: 32px;
+          height: 32px;
+          pointer-events: none;
+        }
+      </style>
+
+      <div id="root" data-composition-id="scene-3-agentes" data-width="1080" data-height="1920">
+        <div id="s3-bg" data-layout-ignore>
+          <div id="s3-dot-field" data-layout-ignore></div>
+          <div id="s3-frame-rule" data-layout-ignore></div>
+        </div>
+
+        <div id="s3-stage">
+          <div id="s3-head">
+            <div id="s3-kicker">NOTÍCIA 02 // MICROSOFT IGNITE</div>
+            <h1 id="s3-title">MAI CODE 2</h1>
+            <div id="s3-subtitle">AGENTE AUTÔNOMO NO GITHUB COPILOT</div>
+          </div>
+
+          <div id="s3-terminal-shell">
+            <div id="s3-cmd-palette">
+              <span id="s3-cmd-text">$ mai-code fix --repo</span>
+              <span id="s3-cmd-shortcut">⌘K</span>
+            </div>
+
+            <div id="s3-log-lines">
+              <div id="s3-log-1">→ Mapeando 14 arquivos no workspace...</div>
+              <div id="s3-log-2">→ Patch multi-arquivo aplicado</div>
+              <div id="s3-log-3">✓ 14/14 TESTES PASSANDO</div>
+            </div>
+
+            <div id="s3-progress-track">
+              <div id="s3-progress-fill"></div>
+            </div>
+
+            <svg id="s3-cursor" viewBox="0 0 32 32" fill="none" data-layout-ignore>
+              <path
+                d="M5 3L25 14L15 17L12 27L5 3Z"
+                fill="#FFFFFF"
+                stroke="#111318"
+                stroke-width="2.5"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+
+          <div id="s3-bento-row">
+            <div id="s3-kpi-left" class="s3-kpi-card">
+              <div class="s3-kpi-num">96%</div>
+              <div class="s3-kpi-lbl">FORÇA EM CÓDIGO</div>
+            </div>
+            <div id="s3-kpi-right" class="s3-kpi-card">
+              <div class="s3-kpi-num">5%</div>
+              <div class="s3-kpi-lbl">DO CUSTO PROMO</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // Entrada rápida (< 0.25s) otimizada para o split de 2.0s (14.5-16.5s global)
+        tl.fromTo(
+          "#s3-head",
+          { y: -16, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.18, ease: "power3.out" },
+          0.0
+        );
+        tl.fromTo(
+          "#s3-terminal-shell",
+          { scale: 0.94, borderRadius: "36px", opacity: 0 },
+          { scale: 1, borderRadius: "24px", opacity: 1, duration: 0.2, ease: "back.out(1.4)" },
+          0.05
+        );
+
+        // Cursor entra e clica ⌘K rapidamente em 0.26s
+        tl.fromTo(
+          "#s3-cursor",
+          { x: 28, y: 24, opacity: 0 },
+          { x: 0, y: 0, opacity: 1, duration: 0.14, ease: "power2.out" },
+          0.12
+        );
+        tl.to(["#s3-cursor", "#s3-cmd-shortcut"], { scale: 0.88, duration: 0.06 }, 0.26);
+        tl.to(["#s3-cursor", "#s3-cmd-shortcut"], { scale: 1, duration: 0.12, ease: "back.out(2)" }, 0.32);
+        tl.to("#s3-cursor", { x: -30, y: 34, opacity: 0, duration: 0.18, ease: "power2.in" }, 0.56);
+
+        tl.fromTo("#s3-log-1", { x: -16, opacity: 0 }, { x: 0, opacity: 1, duration: 0.2 }, 0.28);
+        tl.fromTo("#s3-log-2", { x: -16, opacity: 0 }, { x: 0, opacity: 1, duration: 0.2 }, 0.5);
+        tl.fromTo(
+          "#s3-progress-fill",
+          { scaleX: 0.08 },
+          { scaleX: 1, duration: 0.65, ease: "power2.inOut" },
+          0.3
+        );
+        tl.fromTo(
+          "#s3-log-3",
+          { y: 8, opacity: 0, scale: 0.96 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.24, ease: "back.out(1.6)" },
+          0.78
+        );
+
+        // Cards KPI Bento (96% vs 5% do custo) completos antes de 1.2s (15.7s global)
+        tl.fromTo(
+          "#s3-kpi-left",
+          { y: 20, opacity: 0, scale: 0.95 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.5)" },
+          0.68
+        );
+        tl.fromTo(
+          "#s3-kpi-right",
+          { y: 20, opacity: 0, scale: 0.95 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.28, ease: "back.out(1.5)" },
+          0.88
+        );
+
+        window.__timelines["scene-3-agentes"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cena 2 — full_graphics (0–3.5s) + split (3.5–6.0s)</title>
+  </head>
+  <body>
+    <template id="scene-2-dados-template">
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          font-family: Inter, Outfit, system-ui, sans-serif;
+          color: #f8fafc;
+        }
+        /* Fundo completo 1080x1920 para full_graphics (avatar split pinta sobre 1056..1920px depois de 9.5s) */
+        #s2-bg {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: #0b1324;
+        }
+        #s2-dots {
+          position: absolute;
+          inset: 0;
+          background-image: radial-gradient(rgba(56, 189, 248, 0.16) 2px, transparent 2px);
+          background-size: 36px 36px;
+        }
+        #s2-halo {
+          position: absolute;
+          left: 140px;
+          top: 260px;
+          width: 800px;
+          height: 800px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(34, 211, 238, 0.2) 0%, rgba(11, 19, 36, 0) 70%);
+        }
+
+        /* ======================== MODO A: FULL GRAPHICS (0.0s..3.5s) ======================== */
+        #s2-full-view {
+          position: absolute;
+          inset: 0;
+          padding: 128px 52px 564px 52px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          gap: 20px;
+        }
+        #s2f-header {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        #s2f-kicker {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 24px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: #22d3ee;
+        }
+        #s2f-title {
+          margin: 0;
+          font-family: Outfit, sans-serif;
+          font-size: 76px;
+          font-weight: 900;
+          line-height: 1.0;
+          color: #ffffff;
+        }
+        #s2f-hero-card {
+          position: relative;
+          width: 100%;
+          border-radius: 28px;
+          background: #131f38;
+          border: 2px solid #2c4370;
+          padding: 36px;
+          display: flex;
+          flex-direction: column;
+          gap: 28px;
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+        }
+        #s2f-big-stat {
+          font-family: Outfit, sans-serif;
+          font-size: 156px;
+          font-weight: 900;
+          line-height: 0.9;
+          font-variant-numeric: tabular-nums;
+          color: #22d3ee;
+        }
+        .s2f-stat-badge {
+          padding: 12px 24px;
+          border-radius: 12px;
+          background: #22d3ee;
+          color: #061318;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 25px;
+          font-weight: 700;
+        }
+        .s2f-metric-caption {
+          font-size: 32px;
+          font-weight: 700;
+          color: #f1f5f9;
+        }
+        #s2f-compare-wrap {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          gap: 22px;
+          padding-top: 26px;
+          border-top: 2px solid #25385c;
+        }
+        #s2f-ref-head {
+          position: relative;
+          width: 100%;
+          height: 28px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 19px;
+          font-weight: 700;
+        }
+        #s2f-ref-line {
+          position: absolute;
+          left: 76.923%;
+          top: 28px;
+          bottom: 6px;
+          width: 2px;
+          background: rgba(148, 163, 184, 0.55);
+          z-index: 3;
+          pointer-events: none;
+        }
+        .s2f-bar-track {
+          position: relative;
+          display: block;
+          width: 100%;
+          height: 38px;
+          border-radius: 999px;
+          background: #0b1324;
+          border: 1px solid #1e293b;
+          overflow: hidden;
+        }
+        #s2f-bento-strip {
+          display: flex;
+          gap: 18px;
+          width: 100%;
+        }
+        .s2f-spec-card {
+          flex: 1;
+          border-radius: 22px;
+          background: #131f38;
+          border: 2px solid #263a61;
+          padding: 24px 22px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          gap: 10px;
+        }
+        .s2f-spec-val {
+          font-family: Outfit, sans-serif;
+          font-size: 48px;
+          font-weight: 900;
+          line-height: 1;
+          color: #22d3ee;
+        }
+        .s2f-spec-lbl {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 19px;
+          font-weight: 700;
+          line-height: 1.25;
+          color: #e2e8f0;
+        }
+        #s2f-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 21px;
+          font-weight: 700;
+          color: #cbd5e1;
+        }
+
+        /* ======================== MODO B: SPLIT UPPER 55% (3.5s..6.0s) ======================== */
+        #s2-split-view {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1080px;
+          height: 1056px;
+          padding: 124px 52px 122px 52px;
+          display: flex;
+          flex-direction: column;
+          gap: 18px;
+          opacity: 0;
+        }
+        #s2s-header {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+        #s2s-kicker {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 22px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: #22d3ee;
+        }
+        #s2s-title {
+          margin: 0;
+          font-family: Outfit, sans-serif;
+          font-size: 64px;
+          font-weight: 900;
+          line-height: 1.02;
+          color: #ffffff;
+        }
+        #s2-tab-track {
+          position: relative;
+          width: 100%;
+          height: 60px;
+          border-radius: 16px;
+          background: #131f38;
+          border: 2px solid #263a61;
+          padding: 6px;
+          display: flex;
+          align-items: center;
+        }
+        #s2-tab-pill {
+          position: absolute;
+          left: 6px;
+          top: 6px;
+          width: 318px;
+          height: 44px;
+          border-radius: 10px;
+          background: #22d3ee;
+        }
+        .s2-tab-btn {
+          position: relative;
+          z-index: 2;
+          flex: 1;
+          text-align: center;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 20px;
+          font-weight: 700;
+          color: #e2e8f0;
+        }
+        #s2-morph-card {
+          position: relative;
+          width: 100%;
+          height: 610px;
+          border-radius: 26px;
+          background: #131f38;
+          border: 2px solid #2c4370;
+          padding: 26px 32px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+        }
+        #s2s-hero-box {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .s2-hero-metric-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          gap: 20px;
+        }
+        .s2s-big-stat {
+          font-family: Outfit, sans-serif;
+          font-size: 112px;
+          font-weight: 900;
+          line-height: 0.92;
+          font-variant-numeric: tabular-nums;
+          color: #22d3ee;
+        }
+        .s2s-stat-badge {
+          padding: 10px 20px;
+          border-radius: 12px;
+          background: #22d3ee;
+          color: #061318;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 22px;
+          font-weight: 700;
+        }
+        .s2s-metric-caption {
+          font-size: 28px;
+          font-weight: 700;
+          color: #f1f5f9;
+        }
+        #s2s-compare-wrap {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          padding: 18px 0 6px 0;
+          border-top: 2px solid #25385c;
+        }
+        #s2s-ref-head {
+          position: relative;
+          width: 100%;
+          height: 24px;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 17px;
+          font-weight: 700;
+        }
+        .s2-ref-label-base {
+          position: absolute;
+          left: 76.923%;
+          top: 0;
+          transform: translateX(-100%);
+          padding-right: 10px;
+          color: #cbd5e1;
+        }
+        .s2-ref-label-gain {
+          position: absolute;
+          left: 76.923%;
+          top: 0;
+          padding-left: 10px;
+          color: #22d3ee;
+        }
+        #s2s-ref-line {
+          position: absolute;
+          left: 76.923%;
+          top: 24px;
+          bottom: 4px;
+          width: 2px;
+          background: rgba(148, 163, 184, 0.55);
+          z-index: 3;
+          pointer-events: none;
+        }
+        .s2-bar-item {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .s2-bar-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 21px;
+          font-weight: 700;
+          color: #f8fafc;
+        }
+        .s2-bar-val-muted {
+          color: #cbd5e1;
+        }
+        .s2-bar-val-gain {
+          color: #22d3ee;
+          font-size: 24px;
+        }
+        .s2-bar-track {
+          position: relative;
+          display: block;
+          width: 100%;
+          height: 26px;
+          border-radius: 999px;
+          background: #0b1324;
+          border: 1px solid #1e293b;
+          overflow: hidden;
+        }
+        .s2-bar-fill-prev {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background: #64748b;
+          transform-origin: left center;
+          border-radius: 999px 0 0 999px;
+        }
+        .s2-bar-fill-fable-base {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 76.923%;
+          height: 100%;
+          background: #0284c7;
+          transform-origin: left center;
+        }
+        .s2-bar-fill-fable-gain {
+          position: absolute;
+          left: 76.923%;
+          top: 0;
+          width: 23.077%;
+          height: 100%;
+          background: #22d3ee;
+          transform-origin: left center;
+          border-radius: 0 999px 999px 0;
+        }
+        #s2-detail-panel {
+          position: relative;
+          width: 100%;
+          height: 98px;
+          border-radius: 16px;
+          background: #0d172c;
+          border: 2px solid #25385c;
+          overflow: hidden;
+        }
+        .s2-detail-item {
+          position: absolute;
+          inset: 0;
+          padding: 14px 22px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 18px;
+        }
+        .s2-detail-tag {
+          flex-shrink: 0;
+          padding: 7px 14px;
+          border-radius: 9px;
+          background: rgba(34, 211, 238, 0.16);
+          border: 1.5px solid #22d3ee;
+          color: #22d3ee;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 19px;
+          font-weight: 700;
+        }
+        .s2-detail-text {
+          flex: 1;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 21px;
+          font-weight: 700;
+          line-height: 1.24;
+          color: #f8fafc;
+        }
+        #s2-footer-note {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 20px;
+          font-weight: 700;
+          color: #cbd5e1;
+        }
+        #s2-cursor {
+          position: absolute;
+          left: 140px;
+          top: 44px;
+          width: 32px;
+          height: 32px;
+          z-index: 10;
+          pointer-events: none;
+        }
+      </style>
+
+      <div id="root" data-composition-id="scene-2-dados" data-width="1080" data-height="1920">
+        <div id="s2-bg" data-layout-ignore>
+          <div id="s2-dots" data-layout-ignore></div>
+          <div id="s2-halo" data-layout-ignore></div>
+        </div>
+
+        <!-- VIEW A: FULL GRAPHICS (6.0–9.5s global | 0.0–3.5s local) -->
+        <div id="s2-full-view">
+          <div id="s2f-header">
+            <div id="s2f-kicker">NOTÍCIA 01 // ANTHROPIC</div>
+            <h1 id="s2f-title">CLAUDE FABLE 5.2</h1>
+          </div>
+
+          <div id="s2f-hero-card">
+            <div class="s2-hero-metric-row">
+              <div id="s2f-big-stat">+30%</div>
+              <div class="s2f-stat-badge">MAIS RÁPIDO</div>
+            </div>
+            <div class="s2f-metric-caption">Inferência acelerada para agentes longos</div>
+
+            <div id="s2f-compare-wrap">
+              <div id="s2f-ref-head" data-layout-ignore>
+                <span class="s2-ref-label-base">BASE 100%</span>
+                <span class="s2-ref-label-gain">+30%</span>
+              </div>
+              <div id="s2f-ref-line" data-layout-ignore></div>
+
+              <div class="s2-bar-item">
+                <div class="s2-bar-head">
+                  <span>GERAÇÃO ANTERIOR (BASE)</span>
+                  <span class="s2-bar-val-muted">100%</span>
+                </div>
+                <div class="s2f-bar-track">
+                  <div id="s2f-fill-prev" class="s2-bar-fill-prev"></div>
+                </div>
+              </div>
+
+              <div class="s2-bar-item">
+                <div class="s2-bar-head">
+                  <span>CLAUDE FABLE 5.2 (VELOCIDADE)</span>
+                  <span class="s2-bar-val-gain">+30%</span>
+                </div>
+                <div class="s2f-bar-track">
+                  <div id="s2f-fill-fable-base" class="s2-bar-fill-fable-base"></div>
+                  <div id="s2f-fill-fable-gain" class="s2-bar-fill-fable-gain"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="s2f-bento-strip">
+            <div class="s2f-spec-card">
+              <div class="s2f-spec-val">+30%</div>
+              <div class="s2f-spec-lbl">VELOCIDADE DE SAÍDA</div>
+            </div>
+            <div class="s2f-spec-card">
+              <div class="s2f-spec-val">1M</div>
+              <div class="s2f-spec-lbl">TOKENS DE CONTEXTO</div>
+            </div>
+            <div class="s2f-spec-card">
+              <div class="s2f-spec-val">↓$</div>
+              <div class="s2f-spec-lbl">MENOR CUSTO API</div>
+            </div>
+          </div>
+
+          <div id="s2f-footer">
+            <span>ESCALA PROPORCIONAL · 100% VS 130%</span>
+            <span>NOV 2026</span>
+          </div>
+        </div>
+
+        <!-- VIEW B: SPLIT UPPER 55% (9.5–12.0s global | 3.5–6.0s local) -->
+        <div id="s2-split-view">
+          <div id="s2s-header">
+            <div id="s2s-kicker">NOTÍCIA 01 // ANTHROPIC</div>
+            <h1 id="s2s-title">CLAUDE FABLE 5.2</h1>
+          </div>
+
+          <div id="s2-tab-track">
+            <div id="s2-tab-pill" data-layout-ignore></div>
+            <div id="s2-tab-1" class="s2-tab-btn">VELOCIDADE</div>
+            <div id="s2-tab-2" class="s2-tab-btn" style="color: #09111e;">CONTEXTO</div>
+            <div id="s2-tab-3" class="s2-tab-btn">CUSTO</div>
+
+            <svg id="s2-cursor" viewBox="0 0 32 32" fill="none" data-layout-ignore>
+              <path
+                d="M5 3L25 14L15 17L12 27L5 3Z"
+                fill="#FFFFFF"
+                stroke="#0B1324"
+                stroke-width="2.5"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+
+          <div id="s2-morph-card">
+            <div id="s2s-hero-box">
+              <div class="s2-hero-metric-row">
+                <div class="s2s-big-stat">+30%</div>
+                <div class="s2s-stat-badge">MAIS RÁPIDO</div>
+              </div>
+              <div class="s2s-metric-caption">Inferência acelerada para agentes longos</div>
+            </div>
+
+            <div id="s2s-compare-wrap">
+              <div id="s2s-ref-head" data-layout-ignore>
+                <span class="s2-ref-label-base">BASE 100%</span>
+                <span class="s2-ref-label-gain">+30%</span>
+              </div>
+              <div id="s2s-ref-line" data-layout-ignore></div>
+
+              <div class="s2-bar-item">
+                <div class="s2-bar-head">
+                  <span>GERAÇÃO ANTERIOR (BASE)</span>
+                  <span class="s2-bar-val-muted">100%</span>
+                </div>
+                <div class="s2-bar-track">
+                  <div class="s2-bar-fill-prev" style="transform: scaleX(0.76923);"></div>
+                </div>
+              </div>
+
+              <div class="s2-bar-item">
+                <div class="s2-bar-head">
+                  <span>CLAUDE FABLE 5.2 (VELOCIDADE)</span>
+                  <span class="s2-bar-val-gain">+30%</span>
+                </div>
+                <div class="s2-bar-track">
+                  <div class="s2-bar-fill-fable-base"></div>
+                  <div class="s2-bar-fill-fable-gain"></div>
+                </div>
+              </div>
+            </div>
+
+            <div id="s2-detail-panel">
+              <div id="s2-detail-2" class="s2-detail-item">
+                <span class="s2-detail-tag">CONTEXTO</span>
+                <span class="s2-detail-text">JANELA DE CONTEXTO: 1 MILHÃO DE TOKENS (128K SAÍDA)</span>
+              </div>
+              <div id="s2-detail-3" class="s2-detail-item" style="opacity: 0;">
+                <span class="s2-detail-tag">CUSTO</span>
+                <span class="s2-detail-text">CUSTO DE API: MENOR CUSTO POR TOKEN NA LINHA FABLE</span>
+              </div>
+            </div>
+
+            <div id="s2-footer-note">
+              <span>ESCALA PROPORCIONAL · 100% VS 130%</span>
+              <span>NOV 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // ================== FULL GRAPHICS (0.0s -> 3.5s) ==================
+        tl.fromTo(
+          "#s2f-header",
+          { y: -18, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.2, ease: "power3.out" },
+          0.0
+        );
+        tl.fromTo(
+          "#s2f-hero-card",
+          { scale: 0.94, borderRadius: "44px", opacity: 0 },
+          { scale: 1, borderRadius: "28px", opacity: 1, duration: 0.25, ease: "back.out(1.4)" },
+          0.08
+        );
+        tl.fromTo(
+          "#s2f-bento-strip",
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.28, ease: "power3.out" },
+          0.2
+        );
+
+        const speedProxy = { v: 0 };
+        const fullStatEl = document.getElementById("s2f-big-stat");
+        tl.to(
+          speedProxy,
+          {
+            v: 30,
+            duration: 0.7,
+            ease: "power3.out",
+            onUpdate: function () {
+              fullStatEl.textContent = "+" + Math.round(speedProxy.v) + "%";
+            },
+          },
+          0.14
+        );
+
+        tl.fromTo("#s2f-fill-prev", { scaleX: 0 }, { scaleX: 0.76923, duration: 0.55, ease: "power2.out" }, 0.25);
+        tl.fromTo("#s2f-fill-fable-base", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.out" }, 0.3);
+        tl.fromTo("#s2f-fill-fable-gain", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.out" }, 0.9);
+        tl.fromTo("#s2f-ref-line", { scaleY: 0, opacity: 0 }, { scaleY: 1, opacity: 1, duration: 0.3, ease: "power2.out" }, 0.75);
+
+        // ================== CORTE LIMPO PARA SPLIT (t = 3.5s) ==================
+        tl.set("#s2-tab-pill", { x: 320 }, 0);
+        tl.set("#s2-full-view", { opacity: 0 }, 3.5);
+        tl.set("#s2-split-view", { opacity: 1 }, 3.5);
+
+        // Cursor em split navega da aba CONTEXTO (3.5s) para CUSTO (4.2s)
+        tl.fromTo(
+          "#s2-cursor",
+          { x: 326, y: 18, opacity: 0 },
+          { x: 326, y: 0, opacity: 1, duration: 0.24, ease: "power2.out" },
+          3.65
+        );
+        tl.to("#s2-cursor", { x: 646, duration: 0.32, ease: "power2.inOut" }, 3.9);
+        tl.to("#s2-cursor", { scale: 0.84, duration: 0.08 }, 4.22);
+        tl.to("#s2-cursor", { scale: 1, duration: 0.14, ease: "back.out(2)" }, 4.3);
+        tl.to("#s2-tab-pill", { x: 640, scaleX: 1.07, duration: 0.18, ease: "power2.in" }, 4.22);
+        tl.to("#s2-tab-pill", { scaleX: 1, duration: 0.22, ease: "back.out(1.7)" }, 4.4);
+        tl.to("#s2-tab-2", { color: "#e2e8f0", duration: 0.1 }, 4.25);
+        tl.to("#s2-tab-3", { color: "#09111e", duration: 0.12 }, 4.3);
+        tl.to("#s2-detail-2", { opacity: 0, y: -10, duration: 0.14, ease: "power2.in" }, 4.23);
+        tl.fromTo("#s2-detail-3", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, 4.35);
+        tl.to("#s2-morph-card", { borderRadius: "32px", scale: 1.012, duration: 0.16 }, 4.26);
+        tl.to("#s2-morph-card", { borderRadius: "26px", scale: 1, duration: 0.24 }, 4.44);
+        tl.to("#s2-cursor", { opacity: 0, duration: 0.22 }, 4.95);
+
+        // Pulso sutil determinístico no halo
+        tl.to(
+          "#s2-halo",
+          {
+            scale: 1.07,
+            duration: 1.4,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: Math.max(0, Math.floor(5.6 / 1.4) - 1),
+          },
+          0.0
+        );
+
+        window.__timelines["scene-2-dados"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

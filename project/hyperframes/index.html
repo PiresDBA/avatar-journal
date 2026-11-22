@@ -1,0 +1,180 @@
+<!doctype html>
+<html
+  lang="pt-BR"
+  data-composition-variables='[{"id":"avatarLabel","type":"string","label":"Avatar Slot Label","default":"ÂNCORA IA · LOCAL"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Boletim IA Dev — Diretor Dinâmico 4 Modos (18s)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Outfit:wght@700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #090c12;
+        font-family: Inter, system-ui, sans-serif;
+      }
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #090c12;
+      }
+      [data-composition-id="root"] > div[data-composition-src] {
+        position: absolute;
+        inset: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="root"
+      data-width="1080"
+      data-height="1920"
+      data-duration="18"
+      data-fps="30"
+    >
+      <!-- Track 1: Sub-composições de motion graphics alinhadas aos trechos split e full_graphics -->
+      <div
+        id="el-scene-1"
+        data-composition-id="scene-1-alerta"
+        data-composition-src="compositions/scene-1-alerta.html"
+        data-start="2.5"
+        data-duration="3.5"
+        data-track-index="1"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 10;"
+      ></div>
+
+      <div
+        id="el-scene-2"
+        data-composition-id="scene-2-dados"
+        data-composition-src="compositions/scene-2-dados.html"
+        data-start="6"
+        data-duration="6"
+        data-track-index="1"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 10;"
+      ></div>
+
+      <div
+        id="el-scene-3-terminal"
+        data-composition-id="scene-3-terminal-full"
+        data-composition-src="compositions/scene-3-terminal-full.html"
+        data-start="12"
+        data-duration="2.5"
+        data-track-index="1"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 10;"
+      ></div>
+
+      <div
+        id="el-scene-3"
+        data-composition-id="scene-3-agentes"
+        data-composition-src="compositions/scene-3-agentes.html"
+        data-start="14.5"
+        data-duration="2"
+        data-track-index="1"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 10;"
+      ></div>
+
+      <!-- Track 2: Chrome editorial, divisória Split-Screen, vinheta B-roll e lockup final -->
+      <div
+        id="el-chrome-pip"
+        data-composition-id="chrome-pip"
+        data-composition-src="compositions/chrome-pip.html"
+        data-variable-values='{"avatarMode": "director", "avatarLabel": "AVATAR LOCAL"}'
+        data-start="0"
+        data-duration="18"
+        data-track-index="2"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 25;"
+      ></div>
+
+      <!-- Track 3: Legendas dinâmicas posicionadas conforme o modo ativo -->
+      <div
+        id="el-captions"
+        data-composition-id="captions"
+        data-composition-src="compositions/captions.html"
+        data-track-kind="captions"
+        data-start="0"
+        data-duration="18"
+        data-track-index="3"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 35;"
+      ></div>
+
+      <!-- Track 4: Vídeos do Diretor Dinâmico gerenciados por tools/avatar_slot.py (--avatar-dir) -->
+      <!-- AVATAR_SLOT_MEDIA_START -->
+      <video id="av-seg_1_hook_avatar" src="assets/avatar/liveportrait/seg_1_hook_avatar.mp4" data-start="0" data-duration="2.5" data-media-start="0" data-track-index="4" data-layout-mode="full_avatar" data-zoom-from="1" data-zoom-to="1.05" muted playsinline style="position:absolute; left:0; top:0; width:1080px; height:1920px; object-fit:cover; object-position:center 20%; transform-origin:center 35%; z-index:20; pointer-events:none;"></video>
+      <video id="av-seg_2_headline_split" src="assets/avatar/liveportrait/seg_2_headline_split.mp4" data-start="2.5" data-duration="3.5" data-media-start="0" data-track-index="4" data-layout-mode="split" muted playsinline style="position:absolute; left:0; top:1056px; width:1080px; height:864px; object-fit:cover; object-position:center 20%; z-index:20; pointer-events:none;"></video>
+      <video id="av-seg_4_data_split_point" src="assets/avatar/liveportrait/seg_4_data_split_point.mp4" data-start="9.5" data-duration="2.5" data-media-start="0" data-track-index="4" data-layout-mode="split" muted playsinline style="position:absolute; left:0; top:1056px; width:1080px; height:864px; object-fit:cover; object-position:center 20%; z-index:20; pointer-events:none;"></video>
+      <video id="av-seg_6_terminal_split" src="assets/avatar/liveportrait/seg_6_terminal_split.mp4" data-start="14.5" data-duration="2" data-media-start="0" data-track-index="4" data-layout-mode="split" muted playsinline style="position:absolute; left:0; top:1056px; width:1080px; height:864px; object-fit:cover; object-position:center 20%; z-index:20; pointer-events:none;"></video>
+      <video id="av-seg_7_outro_avatar" src="assets/avatar/liveportrait/seg_7_outro_avatar.mp4" data-start="16.5" data-duration="0.86" data-media-start="0" data-track-index="4" data-layout-mode="full_avatar" muted playsinline style="position:absolute; left:0; top:0; width:1080px; height:1920px; object-fit:cover; object-position:center 20%; transform-origin:center 35%; z-index:20; pointer-events:none;"></video>
+      <video id="av-seg_8_closed_hold" src="assets/avatar/neutral_hold_full.mp4" data-start="17.36" data-duration="0.64" data-media-start="0" data-track-index="4" data-layout-mode="full_avatar" data-zoom-from="1" data-zoom-to="1.02" data-fade-in="0.08" muted playsinline style="position:absolute; left:0; top:0; width:1080px; height:1920px; object-fit:cover; object-position:center 20%; transform-origin:center 35%; z-index:20; pointer-events:none;"></video>
+      <!-- AVATAR_SLOT_MEDIA_END -->
+
+      <!-- Track 10: Áudio mixado local (VoiceCraft TTS + cama sonora com ducking) -->
+      <audio
+        id="el-audio-mix"
+        src="assets/final_mix.wav"
+        data-start="0"
+        data-duration="18"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const rootTl = gsap.timeline({ paused: true });
+      const zoomedVideos = document.querySelectorAll("#root > video[data-zoom-from]");
+      zoomedVideos.forEach(function (v) {
+        const zFrom = parseFloat(v.getAttribute("data-zoom-from") || "1");
+        const zTo = parseFloat(v.getAttribute("data-zoom-to") || "1");
+        const start = parseFloat(v.getAttribute("data-start") || "0");
+        const dur = parseFloat(v.getAttribute("data-duration") || "0");
+        if (dur > 0 && (zFrom !== 1 || zTo !== 1)) {
+          rootTl.fromTo(v, { scale: zFrom }, { scale: zTo, duration: dur, ease: "none" }, start);
+        }
+      });
+      // Crossfade suave fala -> neutro (boca fechada) no encerramento
+      document.querySelectorAll("#root > video[data-fade-in]").forEach(function (v) {
+        const d = parseFloat(v.getAttribute("data-fade-in") || "0");
+        const start = parseFloat(v.getAttribute("data-start") || "0");
+        if (d > 0) {
+          rootTl.fromTo(v, { opacity: 0 }, { opacity: 1, duration: d, ease: "power2.out" }, start);
+        }
+      });
+      document.querySelectorAll("#root > video[data-fade-out]").forEach(function (v) {
+        const d = parseFloat(v.getAttribute("data-fade-out") || "0");
+        const start = parseFloat(v.getAttribute("data-start") || "0");
+        const dur = parseFloat(v.getAttribute("data-duration") || "0");
+        if (d > 0 && dur > 0) {
+          rootTl.to(v, { opacity: 0, duration: d, ease: "power2.in" }, start + Math.max(0, dur - d));
+        }
+      });
+      window.__timelines["root"] = rootTl;
+    </script>
+  </body>
+</html>

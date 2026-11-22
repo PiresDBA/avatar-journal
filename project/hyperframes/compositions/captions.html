@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Legendas Dinâmicas por Modo na Zona Segura</title>
+  </head>
+  <body>
+    <template id="captions-template">
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1080px;
+          height: 1920px;
+          overflow: hidden;
+          pointer-events: none;
+          font-family: Inter, Outfit, system-ui, sans-serif;
+        }
+        /* Posição base split: y: 950..1050px logo acima da divisória; nos modos full/broll aplica y:+440 (1390..1490px) */
+        #cap-stage {
+          position: absolute;
+          left: 48px;
+          right: 48px;
+          top: 950px;
+          height: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .cap-group {
+          position: absolute;
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+          width: fit-content;
+          max-width: 984px;
+          padding: 14px 28px;
+          border-radius: 20px;
+          background: rgb(9, 13, 22);
+          border: 2px solid rgba(56, 189, 248, 0.85);
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.48);
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: center;
+          gap: 10px 16px;
+          opacity: 0;
+        }
+        .cap-word {
+          display: inline-block;
+          font-family: Outfit, Inter, sans-serif;
+          font-size: 54px;
+          font-weight: 900;
+          line-height: 1.12;
+          color: #f8fafc;
+          text-shadow: 0 3px 10px rgba(0, 0, 0, 0.55);
+          transform-origin: center center;
+        }
+      </style>
+
+      <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+        <div id="cap-stage"></div>
+      </div>
+
+      <script>
+        /* AVATAR_PLAN_DATA_START */
+        const AVATAR_SEGMENTS = [{"id": "seg_1_hook_avatar", "start": 0.0, "end": 2.5, "mode": "full_avatar", "clip": "speaking", "has_media": true}, {"id": "seg_2_headline_split", "start": 2.5, "end": 6.0, "mode": "split", "clip": "speaking", "has_media": true}, {"id": "seg_3_data_full_gfx", "start": 6.0, "end": 9.5, "mode": "full_graphics", "clip": null, "has_media": false}, {"id": "seg_4_data_split_point", "start": 9.5, "end": 12.0, "mode": "split", "clip": "pointing", "has_media": true}, {"id": "seg_5_terminal_full_gfx", "start": 12.0, "end": 14.5, "mode": "full_graphics", "clip": null, "has_media": false}, {"id": "seg_6_terminal_split", "start": 14.5, "end": 16.5, "mode": "split", "clip": "idle", "has_media": true}, {"id": "seg_7_outro_avatar", "start": 16.5, "end": 17.36, "mode": "full_avatar", "clip": "speaking", "has_media": true}, {"id": "seg_8_closed_hold", "start": 17.36, "end": 18.0, "mode": "full_avatar", "clip": "idle", "has_media": true}];
+        /* AVATAR_PLAN_DATA_END */
+
+        const WORDS = [
+          {"id": "w0", "text": "Alerta", "start": 0.0, "end": 0.88},
+          {"id": "w1", "text": "dev:", "start": 1.02, "end": 1.26},
+          {"id": "w2", "text": "duas", "start": 1.56, "end": 1.92},
+          {"id": "w3", "text": "viradas", "start": 1.92, "end": 2.32},
+          {"id": "w4", "text": "em", "start": 2.32, "end": 2.5},
+          {"id": "w5", "text": "IA", "start": 2.5, "end": 3.48},
+          {"id": "w6", "text": "esta", "start": 3.48, "end": 3.78},
+          {"id": "w7", "text": "semana", "start": 3.78, "end": 4.22},
+          {"id": "w8", "text": "mudam", "start": 4.22, "end": 4.72},
+          {"id": "w9", "text": "como", "start": 4.72, "end": 4.92},
+          {"id": "w10", "text": "você", "start": 4.92, "end": 5.18},
+          {"id": "w11", "text": "programa.", "start": 5.18, "end": 6.04},
+          {"id": "w12", "text": "O", "start": 6.14, "end": 6.2},
+          {"id": "w13", "text": "Claude", "start": 6.2, "end": 6.42},
+          {"id": "w14", "text": "Fable", "start": 6.42, "end": 6.86},
+          {"id": "w15", "text": "5.2", "start": 6.86, "end": 7.88},
+          {"id": "w16", "text": "ficou", "start": 7.88, "end": 8.34},
+          {"id": "w17", "text": "+30%", "start": 8.34, "end": 9.0},
+          {"id": "w18", "text": "mais", "start": 9.0, "end": 9.32},
+          {"id": "w19", "text": "rápido,", "start": 9.32, "end": 9.7},
+          {"id": "w20", "text": "com", "start": 9.94, "end": 10.08},
+          {"id": "w21", "text": "um", "start": 10.08, "end": 10.22},
+          {"id": "w22", "text": "milhão", "start": 10.22, "end": 10.46},
+          {"id": "w23", "text": "de", "start": 10.46, "end": 10.56},
+          {"id": "w24", "text": "tokens", "start": 10.56, "end": 10.86},
+          {"id": "w25", "text": "e", "start": 10.86, "end": 11.14},
+          {"id": "w26", "text": "menor", "start": 11.14, "end": 11.46},
+          {"id": "w27", "text": "custo.", "start": 11.46, "end": 12.06},
+          {"id": "w28", "text": "E", "start": 12.24, "end": 12.34},
+          {"id": "w29", "text": "o", "start": 12.34, "end": 12.4},
+          {"id": "w30", "text": "MAI", "start": 12.4, "end": 12.64},
+          {"id": "w31", "text": "Code", "start": 12.64, "end": 12.88},
+          {"id": "w32", "text": "2", "start": 12.88, "end": 13.24},
+          {"id": "w33", "text": "no", "start": 13.24, "end": 13.38},
+          {"id": "w34", "text": "Copilot", "start": 13.38, "end": 13.76},
+          {"id": "w35", "text": "entrega", "start": 13.76, "end": 14.2},
+          {"id": "w36", "text": "96%", "start": 14.2, "end": 15.22},
+          {"id": "w37", "text": "por", "start": 15.22, "end": 15.44},
+          {"id": "w38", "text": "5%", "start": 15.44, "end": 16.08},
+          {"id": "w39", "text": "do", "start": 16.08, "end": 16.24},
+          {"id": "w40", "text": "custo.", "start": 16.24, "end": 16.66},
+          {"id": "w41", "text": "Até", "start": 16.68, "end": 16.9},
+          {"id": "w42", "text": "amanhã!", "start": 16.9, "end": 17.32}
+        ];
+
+        const EMPHASIS = new Set([
+          "Alerta", "duas", "viradas", "IA", "Claude", "Fable", "5.2",
+          "30%", "milhão", "tokens", "MAI", "Code", "2", "Copilot", "96%", "5%", "amanhã!"
+        ]);
+
+        function modeAt(t) {
+          for (let i = 0; i < AVATAR_SEGMENTS.length; i++) {
+            const seg = AVATAR_SEGMENTS[i];
+            if (t >= seg.start && t < seg.end) {
+              return seg.mode;
+            }
+          }
+          return AVATAR_SEGMENTS.length ? AVATAR_SEGMENTS[AVATAR_SEGMENTS.length - 1].mode : "split";
+        }
+
+        // Agrupar em blocos curtos (2-3 palavras) sem cruzar cenas, trocas de modo ou pausas > 0.24s
+        const GROUPS = [];
+        let cur = [];
+        WORDS.forEach(function (w, idx) {
+          const prev = cur.length ? cur[cur.length - 1] : null;
+          const sceneChanged = prev && Math.floor(prev.start / 6) !== Math.floor(w.start / 6);
+          const modeChanged = prev && modeAt(prev.start) !== modeAt(w.start);
+          const longPause = prev && w.start - prev.end > 0.24;
+          const charsNow = cur.reduce(function (acc, item) { return acc + item.text.length + 1; }, 0);
+          if (cur.length && (cur.length >= 3 || sceneChanged || modeChanged || longPause || charsNow + w.text.length > 22)) {
+            GROUPS.push({
+              words: cur,
+              start: cur[0].start,
+              end: Math.min(cur[cur.length - 1].end + 0.16, w.start - 0.03),
+              mode: modeAt(cur[0].start),
+            });
+            cur = [];
+          }
+          cur.push(w);
+          if (idx === WORDS.length - 1 && cur.length) {
+            GROUPS.push({
+              words: cur,
+              start: cur[0].start,
+              end: Math.min(cur[cur.length - 1].end + 0.5, 17.92),
+              mode: modeAt(cur[0].start),
+            });
+          }
+        });
+
+        const stage = document.getElementById("cap-stage");
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+
+        // Inicializa y conforme o primeiro trecho (full_avatar -> y: 440 -> 1390px)
+        const initMode = AVATAR_SEGMENTS.length ? AVATAR_SEGMENTS[0].mode : "split";
+        tl.set("#cap-stage", { y: initMode === "split" ? 0 : 440 }, 0);
+
+        GROUPS.forEach(function (grp, gi) {
+          const gEl = document.createElement("div");
+          gEl.id = "cap-g-" + gi;
+          gEl.className = "cap-group";
+
+          grp.words.forEach(function (w) {
+            const sp = document.createElement("span");
+            sp.id = "cap-" + w.id;
+            sp.className = "cap-word";
+            sp.textContent = w.text;
+            gEl.appendChild(sp);
+          });
+          stage.appendChild(gEl);
+
+          const prevEnd = gi > 0 ? GROUPS[gi - 1].end : 0;
+          const enterAt = Math.max(prevEnd + 0.005, grp.start - 0.025);
+          const targetY = grp.mode === "split" ? 0 : 440;
+          tl.set("#cap-stage", { y: targetY }, Math.max(0, enterAt - 0.003));
+
+          // Entrada sem fade de opacidade: legenda sempre em contraste pleno
+          tl.set(gEl, { opacity: 1 }, enterAt);
+          tl.fromTo(
+            gEl,
+            { y: 14, scale: 0.96 },
+            { y: 0, scale: 1, duration: 0.12, ease: "back.out(1.6)" },
+            enterAt
+          );
+
+          // Destaque karaoke palavra por palavra sincronizado
+          grp.words.forEach(function (w) {
+            const wSel = "#cap-" + w.id;
+            const hiColor = EMPHASIS.has(w.text) ? "#FACC15" : "#38BDF8";
+            const dur = Math.max(0.08, w.end - w.start);
+            tl.fromTo(
+              wSel,
+              { color: "#F8FAFC", scale: 1.0 },
+              { color: hiColor, scale: 1.08, duration: Math.min(0.1, dur * 0.45), ease: "power2.out" },
+              w.start
+            );
+            tl.to(
+              wSel,
+              { color: "#F8FAFC", scale: 1.0, duration: 0.1, ease: "power1.out" },
+              w.end
+            );
+          });
+
+          // Saída determinística via opacity apenas
+          const fadeDur = 0.08;
+          tl.to(gEl, { y: -6, duration: fadeDur, ease: "power2.in" }, Math.max(enterAt + 0.12, grp.end - fadeDur));
+          tl.set(gEl, { opacity: 0, y: 0 }, grp.end);
+        });
+
+        // Self-lint de saída conforme hyperframes-media
+        GROUPS.forEach(function (grp, gi) {
+          const el = document.getElementById("cap-g-" + gi);
+          if (!el) return;
+          tl.seek(grp.end + 0.01);
+          const computed = window.getComputedStyle(el);
+          if (computed.opacity !== "0") {
+            console.warn("[caption-lint] group " + gi + " still visible at t=" + (grp.end + 0.01).toFixed(2));
+          }
+        });
+        tl.seek(0);
+
+        window.__timelines["captions"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

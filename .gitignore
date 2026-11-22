@@ -1,0 +1,80 @@
+# ---------------------------------------------------------------------------
+# Nada gerado entra no repositorio. So codigo, docs e configuracao de exemplo.
+# ---------------------------------------------------------------------------
+
+# Midia gerada (render, clipes de avatar, lipsync, voz, trilha, legendas queimadas)
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.avi
+*.m4v
+*.gif
+*.wav
+*.mp3
+*.m4a
+*.flac
+*.aac
+*.ogg
+*.opus
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.bmp
+*.tif
+*.tiff
+*.psd
+*.srt
+*.vtt
+*.ass
+*.ttf
+*.otf
+
+# Saidas do pipeline (relatorios, QA, renders, caches de inferencia)
+project/hyperframes/renders/
+project/hyperframes/assets/
+project/hyperframes/node_modules/
+project/artifacts/
+project/assets/
+**/lipsync/
+**/liveportrait/
+*.inference.log
+*.liveportrait.log
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Segredos e ambiente (nunca versionar)
+.env
+.env.*
+*.env
+*.key
+*.pem
+*.pfx
+*.p12
+*.crt
+*.cer
+secrets.json
+credentials.json
+token.json
+service-account*.json
+*api_key*
+*apikey*
+*.secret
+
+# Editores / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.swp
