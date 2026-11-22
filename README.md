@@ -69,8 +69,11 @@ desenha a boca.
    **Nunca vai para o vídeo final.**
 5. **Pixels (LivePortrait)** — `tools/avatar_liveportrait.py` usa o slice nítido como `-s` e o
    clipe do Wav2Lip como `-d`, com `--animation_region lip --flag_relative_motion
-   --flag_stitching`: só o movimento dos lábios é transferido; cabeça, piscadas, mãos e corpo
-   continuam sendo os do material original. Saída em `assets/avatar/liveportrait/<seg>.mp4`.
+   --flag_stitching`: só o movimento dos lábios é transferido. Três calibrações por padrão:
+   `--driving-multiplier 0.7` (a 1.0 a boca abre demais), `--drive-shift-frames 5` (o filtro do
+   LivePortrait atrasa ~4 frames) e **composite só-da-boca** — o rosto inteiro amacia no
+   gerador, então a fonte nítida permanece em tudo e o LivePortrait preenche só uma elipse com
+   feather sobre a boca. Saída em `assets/avatar/liveportrait/<seg>.mp4`.
 6. **Encerramento** — a fala termina em 17,32 s; o bloco de avatar é cortado em 17,36 s e um
    *hold* neutro (`seg_8_closed_hold` → `neutral_hold_full.mp4`, frame de `idle` realinhado por
    pad/crop e retimado 0,78×) segura boca fechada e olhos abertos até 18,00 s, com dissolve de
@@ -114,8 +117,9 @@ Ajuste fino útil: `--driving-multiplier 0.85` suaviza a boca se ela ficar exage
 ### Auditar (sincronia + nitidez, com números)
 
 ```bash
-python tools/audit_lipsync.py --project ./project
-# grava project/artifacts/quality_audit.json
+python tools/audit_lipsync.py --project ./project        # nitidez + movimento de pixels
+python tools/audit_lip_signal.py --project ./project     # landmarks: sincronia por onsets
+# gravam project/artifacts/{quality_audit,lip_signal}.json
 ```
 
 Resultado desta entrega: Wav2Lip entrega 23–41 % da nitidez do material original; o LivePortrait
@@ -133,6 +137,7 @@ Manual em português, sem jargão: **[docs/MANUAL_PT.md](docs/MANUAL_PT.md)**.
 
 ```
 tools/                        programa: slot · lipsync · liveportrait · tts · auditoria
+                              (audit_lipsync: pixels/nitidez · audit_lip_signal: landmarks/sincronia)
 project/avatar_plan.example.json   configuracao de exemplo (copie para project/artifacts/)
 project/hyperframes/          template da composicao (index.html + compositions)
 docs/                         arquitetura, how-to, auditoria, manual

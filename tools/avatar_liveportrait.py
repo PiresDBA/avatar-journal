@@ -154,6 +154,89 @@ def run_liveportrait(
     }
 
 
+
+# ---------------------------------------------------------------------------
+# Mouth-only composite: keep the sharp source pixels, take only the lips from
+# LivePortrait. LivePortrait re-renders the whole face crop through its SPADE
+# generator, which softens skin/beard by ~2x even where nothing moves; blending
+# only a feathered mouth ellipse restores the original detail everywhere else.
+# ---------------------------------------------------------------------------
+
+def composite_mouth(
+    ffmpeg: str,
+    source_clip: Path,
+    lp_clip: Path,
+    dest: Path,
+    fps: int,
+    sharpen: float,
+    feather: float,
+) -> bool:
+    try:
+        import cv2  # noqa: PLC0415
+        import numpy as np  # noqa: PLC0415
+    except Exception:
+        return False
+
+    src_cap = cv2.VideoCapture(str(source_clip))
+    lp_cap = cv2.VideoCapture(str(lp_clip))
+    ok, first = lp_cap.read()
+    if not ok:
+        src_cap.release()
+        lp_cap.release()
+        return False
+    h, w = first.shape[:2]
+    lp_cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+
+    cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+    faces = cascade.detectMultiScale(cv2.cvtColor(first, cv2.COLOR_BGR2GRAY), 1.08, 5, minSize=(60, 60))
+    if len(faces) == 0:
+        src_cap.release()
+        lp_cap.release()
+        return False
+    x, y, fw, fh = sorted(faces, key=lambda b: b[2] * b[3])[-1]
+
+    mask = np.zeros((h, w), dtype=np.float32)
+    center = (int(x + 0.5 * fw), int(y + 0.72 * fh))
+    axes = (max(8, int(0.34 * fw)), max(6, int(0.26 * fh)))
+    cv2.ellipse(mask, center, axes, 0, 0, 360, 1.0, -1)
+    sigma = max(3.0, feather * fw)
+    k = int(sigma * 4) | 1
+    mask = cv2.GaussianBlur(mask, (k, k), sigma)
+    mask3 = mask[:, :, None]
+
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    cmd = [
+        ffmpeg, "-y", "-hide_banner", "-loglevel", "error",
+        "-f", "rawvideo", "-pix_fmt", "bgr24", "-s", f"{w}x{h}", "-r", str(fps), "-i", "-",
+        "-an", "-c:v", "libx264", "-crf", "15", "-preset", "medium",
+        "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(dest),
+    ]
+    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+    written = 0
+    try:
+        while True:
+            ok_s, src = src_cap.read()
+            ok_l, lp = lp_cap.read()
+            if not ok_s or not ok_l:
+                break
+            if lp.shape[:2] != (h, w):
+                lp = cv2.resize(lp, (w, h), interpolation=cv2.INTER_LANCZOS4)
+            mouth = lp.astype(np.float32)
+            if sharpen > 0:
+                blurred = cv2.GaussianBlur(mouth, (0, 0), 1.1)
+                mouth = np.clip(mouth * (1.0 + sharpen) - blurred * sharpen, 0, 255)
+            out = src.astype(np.float32) * (1.0 - mask3) + mouth * mask3
+            proc.stdin.write(np.clip(out, 0, 255).astype(np.uint8).tobytes())
+            written += 1
+    finally:
+        src_cap.release()
+        lp_cap.release()
+        if proc.stdin:
+            proc.stdin.close()
+        proc.wait()
+    return written > 0 and dest.is_file()
+
+
 def lip_sync_project(args: argparse.Namespace) -> dict[str, Any]:
     project = Path(args.project)
     hf_dir = project / "hyperframes"
@@ -242,14 +325,28 @@ def lip_sync_project(args: argparse.Namespace) -> dict[str, Any]:
                     "-c:v", "libx264", "-crf", "14", "-preset", "veryfast", str(src_slice),
                 ]
             )
+            shift = max(0, int(args.drive_shift_frames))
+            shift_s = shift / float(fps)
             _run(
                 [
                     ffmpeg, "-y", "-hide_banner", "-loglevel", "error",
-                    "-t", f"{duration:.3f}", "-i", str(driving),
+                    "-ss", f"{shift_s:.3f}", "-i", str(driving),
                     "-an", "-r", str(fps), "-pix_fmt", "yuv420p",
                     "-c:v", "libx264", "-crf", "16", "-preset", "veryfast", str(drv_slice),
                 ]
             )
+            if shift:
+                padded = work / f"{seg_id}.driving_pad.mp4"
+                _run(
+                    [
+                        ffmpeg, "-y", "-hide_banner", "-loglevel", "error",
+                        "-i", str(drv_slice),
+                        "-vf", f"tpad=stop_mode=clone:stop_duration={shift_s + 0.2:.3f},trim=duration={duration:.3f},setpts=PTS-STARTPTS",
+                        "-an", "-r", str(fps), "-c:v", "libx264", "-crf", "16", "-preset", "veryfast",
+                        str(padded),
+                    ]
+                )
+                drv_slice = padded
             meta = run_liveportrait(
                 python=lp_python,
                 lp_dir=lp_dir,
@@ -277,7 +374,19 @@ def lip_sync_project(args: argparse.Namespace) -> dict[str, Any]:
                 raise RuntimeError(
                     f"LivePortrait output too short: {probed:.2f}s < block {duration:.2f}s"
                 )
-            conform_clip(ffmpeg, raw, dest, width, height, duration, fps)
+            composited = False
+            if not args.no_mouth_composite:
+                composited = composite_mouth(
+                    ffmpeg=ffmpeg,
+                    source_clip=src_slice,
+                    lp_clip=raw,
+                    dest=dest,
+                    fps=fps,
+                    sharpen=args.mouth_sharpen,
+                    feather=args.mouth_feather,
+                )
+            if not composited:
+                conform_clip(ffmpeg, raw, dest, width, height, duration, fps)
             results.append(
                 {
                     "id": seg_id,
@@ -290,6 +399,7 @@ def lip_sync_project(args: argparse.Namespace) -> dict[str, Any]:
                     "driving": str(driving),
                     "output": str(dest),
                     "dimensions": f"{width}x{height}",
+                    "mouth_composite": composited,
                     **meta,
                 }
             )
@@ -314,6 +424,8 @@ def lip_sync_project(args: argparse.Namespace) -> dict[str, Any]:
         "python": str(lp_python),
         "animation_region": args.animation_region,
         "driving_multiplier": args.driving_multiplier,
+        "drive_shift_frames": args.drive_shift_frames,
+        "mouth_composite": not args.no_mouth_composite,
         "speech_blocks": blocks,
         "min_free_vram_mb": args.min_free_mb,
         "blocks": results,
@@ -365,7 +477,16 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--ffmpeg", default=None)
     p.add_argument("--fps", type=int, default=30)
     p.add_argument("--animation-region", default="lip", choices=["lip", "exp", "pose", "eyes", "all"])
-    p.add_argument("--driving-multiplier", type=float, default=1.0)
+    p.add_argument("--driving-multiplier", type=float, default=0.7,
+                   help="Ganho do movimento labial vindo do driving (1.0 amplifica demais)")
+    p.add_argument("--drive-shift-frames", type=int, default=0,
+                   help="Avanca o driving N frames para compensar atraso do Wav2Lip")
+    p.add_argument("--no-mouth-composite", action="store_true",
+                   help="Desliga o blend so-da-boca (mantem o frame inteiro do LivePortrait)")
+    p.add_argument("--mouth-sharpen", type=float, default=0.35,
+                   help="Unsharp na boca do LivePortrait antes do blend")
+    p.add_argument("--mouth-feather", type=float, default=0.05,
+                   help="Raio do feather da mascara, como fracao da largura do rosto")
     p.add_argument("--source-max-dim", type=int, default=1920)
     p.add_argument("--min-free-mb", type=int, default=700)
     p.add_argument("--timeout-s", type=int, default=1800)

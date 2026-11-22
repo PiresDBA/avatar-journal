@@ -32,8 +32,8 @@ python tools/avatar_slot.py --project ./project \
 # 3) movimento (Wav2Lip) — 1 processo por bloco
 python tools/avatar_lipsync.py --project ./project --apply
 
-# 4) pixels (LivePortrait) — 1 processo por bloco
-python tools/avatar_liveportrait.py --project ./project --apply
+# 4) pixels (LivePortrait + composite só-da-boca) — 1 processo por bloco
+python tools/avatar_liveportrait.py --project ./project --apply     --driving-multiplier 0.7 --drive-shift-frames 5
 
 # 5) gates + render
 cd project/hyperframes
@@ -56,6 +56,34 @@ Simular sem rodar GPU:
 python tools/avatar_liveportrait.py --project ./project --dry-run
 python tools/avatar_lipsync.py --project ./project --dry-run
 ```
+
+## Expressividade da voz (tags)
+
+A narração vai para o motor de TTS **verbatim**: tudo entre `[...]` chega ao modelo. O que cada
+motor realmente renderiza:
+
+| Você quer | Tag / controle | Motor |
+|---|---|---|
+| pausa | `[pause]`, `[pause 500ms]`, `[pause 1.5s]` | todos |
+| ênfase / ritmo | `[slow]…[/slow]`, `[fast]`, `[emphasis]`, `[spell]` | todos |
+| risada / suspiro | `[laughter]`, `[sigh]` | motor padrão (VoiceStudio), CosyVoice 3 |
+| **inspiração audível** | `[breath]` | **só CosyVoice 3** (opt-in) |
+| sussurro | `--style whisper` | motor padrão |
+| emoção | `[emotion:…]` (audiobook/stories) | só IndexTTS2 / CosyVoice 3 / VoxCPM2 |
+| pausa entre parágrafos | `--paragraph-gap-ms 700` | todos |
+| repetir a mesma take | `--seed 12345` | motor padrão e opt-in |
+| manter silêncios (onde moram as respirações) | `--keep-silences` (`postprocess_output=false`) | motor padrão |
+
+Tag fora do motor ativo **não é removida**: o modelo lê em voz alta. Valide sempre antes:
+
+```bash
+python tools/voice_craft_tts.py --text "[pause 400ms] Alerta dev: [laughter] duas viradas." --lint-tags
+# JSON com tags, unsupported e warnings
+```
+
+Sem CosyVoice 3 instalado, o caminho para respiração natural é o "coaxar": referência de clipe
+com respirações reais, frases curtas + `[pause 300ms]`, `--keep-silences` e
+`--class-temperature 0.3–0.7` para variar takes; quando um take respirar bem, fixe `--seed`.
 
 ## Catálogo de erros e o que fazer
 

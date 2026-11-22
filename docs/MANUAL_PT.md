@@ -83,6 +83,29 @@ O **áudio não mudou** — a voz já estava boa. Mudou só quem desenha a boca.
 
 ---
 
+## 4.1 Deixar a fala mais natural (pausas, risada, suspiro)
+
+O texto vai para o sintetizador exatamente como foi escrito, então dá para dirigir a
+interpretação por marcações:
+
+- **pausa**: `[pause]` (350 ms), `[pause 500ms]`, `[pause 1.5s]`;
+- **ritmo**: `[slow]…[/slow]`, `[fast]…[/fast]`, `[emphasis]…[/emphasis]`;
+- **risada / suspiro**: `[laughter]`, `[sigh]` — funcionam no motor padrão (VoiceStudio);
+- **sussurro**: opção de estilo `whisper`;
+- **pausa entre parágrafos**: `--paragraph-gap-ms 700` (mais natural que emendar tudo).
+
+O que **não** existe no motor padrão: inspiração audível (`[breath]`). Essa marcação só é
+renderizada pelo CosyVoice 3; se você usar sem ele instalado, o programa vai **falar a palavra
+"breath"**. Para conferir antes de gerar:
+
+```bash
+python tools/voice_craft_tts.py --text "seu texto com [tags]" --lint-tags
+```
+
+Sem CosyVoice, o jeito de conseguir respiração é indireto: clipe de referência com respirações
+reais, frases curtas com pausas, `--keep-silences` (não cortar silêncios) e
+`--class-temperature 0.3` para variar as tomadas; quando uma ficar boa, fixe `--seed`.
+
 ## 5. Problemas comuns
 
 **“A boca voltou a ficar de plástico.”**

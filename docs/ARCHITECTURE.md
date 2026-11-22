@@ -46,8 +46,19 @@ fonte, gerando a face em espaço de recorte de 512 px e fazendo paste-back no fr
 Com `--animation_region lip` apenas a região dos lábios é animada, então cabeça, piscadas,
 mãos e tatuagem permanecem do material original.
 
-Resultado medido nos frames: mesma nitidez de barba/poros falando e em silêncio (comparativo
-gerado localmente; não versionado).
+### Calibração obrigatória (o que a auditoria mostrou)
+
+Usar LivePortrait no frame inteiro ainda amacia o rosto: a metade superior (olhos/testa, onde
+nada se move) caiu de nitidez 207 para 92. Três correções entraram por padrão:
+
+| Correção | Efeito medido |
+|---|---|
+| `composite_mouth` — fonte nítida em tudo, LivePortrait só numa elipse com feather na boca (+ unsharp 0.35) | metade superior volta a 204–218 (fonte 207) |
+| `--driving-multiplier 0.7` (era 1.0) | abertura labial vs fonte: 0.95 → 0.73 (sem perder articulação) |
+| `--drive-shift-frames 5` | o filtro temporal do LivePortrait adiciona ~4 frames; atraso por onsets de palavra: 206 ms → 73 ms |
+
+Resultado: nitidez de barba/poros igual falando e em silêncio, boca sem exagero e sincronia na
+faixa de 2 frames (66 ms).
 
 ### Alternativas avaliadas
 
@@ -98,6 +109,7 @@ relevantes para este repositório:
 
 - **d-015** — encerramento neutro com boca fechada.
 - **d-016** — Wav2Lip vira gerador de movimento; LivePortrait passa a gerar os pixels.
+- **d-017** — composite só-da-boca + `driving_multiplier 0.7` + `drive_shift_frames 5`.
 
 ## 8. Estrutura dos artefatos
 

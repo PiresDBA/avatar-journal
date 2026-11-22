@@ -26,9 +26,11 @@ import argparse
 import dataclasses
 import json
 import os
+import re
 import shutil
 import socket
 import subprocess
+import sys
 import tempfile
 import time
 import urllib.error
@@ -163,6 +165,59 @@ def _post_voicestudio(
     if not raw:
         raise RuntimeError("VoiceStudio returned an empty audio payload")
     return raw, headers
+
+
+# ---------------------------------------------------------------------------
+# Expressiveness: which bracket tags the active engine really renders
+# ---------------------------------------------------------------------------
+# Source of truth: GET /engines/tts -> expression_caps. Engine defaults below are
+# the documented behaviour of the bundled engine (VoiceStudio/OmniVoice) and of the
+# opt-in ones. Unknown tags are NOT stripped by the engine: they are read aloud.
+ENGINE_TAGS: dict[str, set[str]] = {
+    "voicestudio": {"pause", "slow", "fast", "emphasis", "spell", "laughter", "sigh",
+                    "confirmation-en", "question-en", "question-ah", "question-oh",
+                    "question-ei", "question-yi", "surprise-ah", "surprise-oh",
+                    "surprise-wa", "surprise-yo", "dissatisfaction-hnn"},
+    "cosyvoice": {"pause", "slow", "fast", "emphasis", "spell", "laughter", "sigh", "breath"},
+    "indextts2": {"pause", "slow", "fast", "emphasis", "spell", "emotion"},
+    "voxcpm2": {"pause", "slow", "fast", "emphasis", "spell", "emotion"},
+    "piper": {"pause"},
+}
+ENGINE_STYLES: dict[str, set[str]] = {"voicestudio": {"whisper"}}
+ENGINE_EMOTION: dict[str, str] = {"indextts2": "graded", "cosyvoice": "direction", "voxcpm2": "direction"}
+
+
+def analyze_expression(text: str, engine: str = "voicestudio") -> dict[str, Any]:
+    """List the bracket tags used in `text` and flag the ones the engine ignores.
+
+    `[pause 500ms]`, `[pause]`, `[slow]…[/slow]` etc. are matched as tags as well, so
+    closing markers (`[/slow]`) are grouped with their opener.
+    """
+    found = re.findall(r"\[([^\[\]]{1,60})\]", text)
+    tags: list[str] = []
+    for raw in found:
+        name = raw.strip().lower()
+        if name.startswith("/"):
+            name = name[1:]
+        name = re.split(r"[\s:]", name, maxsplit=1)[0]
+        if name and name not in tags:
+            tags.append(name)
+    supported = ENGINE_TAGS.get(engine, set())
+    unsupported = [t for t in tags if t not in supported]
+    warnings: list[str] = []
+    for tag in unsupported:
+        if tag == "breath":
+            warnings.append(
+                "[breath] is rendered only by CosyVoice 3 (opt-in); the default engine will read it aloud"
+            )
+        elif tag == "emotion":
+            warnings.append(
+                "[emotion:TEXT] is parsed by the audiobook/stories layer and applied by IndexTTS2, "
+                "CosyVoice 3 or VoxCPM2; the default engine ignores it and may read it aloud"
+            )
+        else:
+            warnings.append(f"[{tag}] is not rendered by '{engine}' — it may be spoken literally")
+    return {"engine": engine, "tags": tags, "unsupported": unsupported, "warnings": warnings}
 
 
 # ---------------------------------------------------------------------------
@@ -334,6 +389,17 @@ class VoiceCraftTTS(BaseTool):
             "format": {"type": "string", "enum": ["wav", "mp3"], "default": "wav"},
             "rate": {"type": ["string", "number", "null"], "default": None},
             "pitch": {"type": ["string", "number", "null"], "default": None},
+            "style": {"type": ["string", "null"], "default": None,
+                      "description": "Delivery style accepted by the engine (default engine: 'whisper')"},
+            "seed": {"type": ["integer", "null"], "default": None,
+                     "description": "Pin the take: same seed + profile = reproducible delivery"},
+            "paragraph_gap_ms": {"type": ["integer", "null"], "default": None,
+                                 "description": "Silence inserted between paragraphs (0-5000 ms)"},
+            "position_temperature": {"type": ["number", "null"], "default": None},
+            "class_temperature": {"type": ["number", "null"], "default": None},
+            "num_step": {"type": ["integer", "null"], "default": None},
+            "postprocess_output": {"type": ["boolean", "null"], "default": None,
+                                   "description": "false keeps long silences (where breaths live)"},
             "base_url": {"type": "string", "default": DEFAULT_BASE_URL},
             "voicestudio_url": {"type": "string", "default": DEFAULT_VOICESTUDIO_URL},
             "health_timeout": {"type": "number", "default": 12.0},
@@ -360,6 +426,7 @@ class VoiceCraftTTS(BaseTool):
             "fallback_used": {"type": "boolean"},
             "fallback_reason": {"type": ["string", "null"]},
             "decision_id": {"type": ["string", "null"]},
+            "expression": {"type": "object"},
             "elapsed_seconds": {"type": "number"},
         },
     }
@@ -415,7 +482,11 @@ class VoiceCraftTTS(BaseTool):
                 "response_format": str(inputs.get("format") or "wav"),
                 "language": "pt" if str(inputs.get("language") or "pt-BR").lower().startswith("pt") else str(inputs.get("language") or "pt"),
             }
-            for key in ("instructions", "rate", "pitch"):
+            for key in (
+                "instructions", "rate", "pitch", "style", "seed",
+                "paragraph_gap_ms", "position_temperature", "class_temperature",
+                "num_step", "postprocess_output",
+            ):
                 value = inputs.get(key)
                 if value not in (None, ""):
                     body[key] = value
@@ -485,6 +556,10 @@ class VoiceCraftTTS(BaseTool):
             profile_used = "piper-local"
 
         duration = probe_duration(out_path, ffprobe_override)
+        engine_key = "piper" if fallback_used else ("voicestudio" if provider_used == "voicestudio" else str(provider_used or "voicestudio"))
+        expression = analyze_expression(text, engine_key if engine_key in ENGINE_TAGS else "voicestudio")
+        if expression["warnings"]:
+            print("[voice_craft_tts] expressividade: " + " | ".join(expression["warnings"]), file=sys.stderr)
         decision_id = None
         if decision_log:
             options: list[dict[str, Any]] = []
@@ -539,6 +614,7 @@ class VoiceCraftTTS(BaseTool):
                 "fallback_used": fallback_used,
                 "fallback_reason": fallback_reason,
                 "decision_id": decision_id,
+                "expression": expression,
                 "elapsed_seconds": round(time.time() - started, 2),
             },
         )
@@ -581,6 +657,14 @@ def _cli() -> int:
     parser.add_argument("--profile", default=DEFAULT_PROFILE)
     parser.add_argument("--model", default=None)
     parser.add_argument("--instructions", default=None)
+    parser.add_argument("--style", default=None, help="Delivery style (default engine: whisper)")
+    parser.add_argument("--seed", type=int, default=None, help="Pin the take (reproducible delivery)")
+    parser.add_argument("--paragraph-gap-ms", type=int, default=None, help="Silence between paragraphs (0-5000)")
+    parser.add_argument("--position-temperature", type=float, default=None)
+    parser.add_argument("--class-temperature", type=float, default=None)
+    parser.add_argument("--num-step", type=int, default=None)
+    parser.add_argument("--keep-silences", action="store_true", help="postprocess_output=false (keeps breath-length pauses)")
+    parser.add_argument("--lint-tags", action="store_true", help="Only report which bracket tags this engine supports")
     parser.add_argument("--language", default="pt-BR")
     parser.add_argument("--format", default="wav", choices=["wav", "mp3"])
     parser.add_argument("--decision-log", default=None)
@@ -600,6 +684,11 @@ def _cli() -> int:
     text = args.text
     if args.text_file:
         text = Path(args.text_file).read_text(encoding="utf-8")
+    if args.lint_tags:
+        if args.text_file and not text:
+            text = Path(args.text_file).read_text(encoding="utf-8")
+        print(json.dumps(analyze_expression(text or "", args.provider), indent=2, ensure_ascii=False))
+        return 0
     if not text:
         parser.error("--text or --text-file is required")
 
@@ -617,6 +706,13 @@ def _cli() -> int:
             "format": args.format,
             "voicestudio_url": args.voicestudio_url,
             "decision_log": args.decision_log,
+            "style": args.style,
+            "seed": args.seed,
+            "paragraph_gap_ms": args.paragraph_gap_ms,
+            "position_temperature": args.position_temperature,
+            "class_temperature": args.class_temperature,
+            "num_step": args.num_step,
+            "postprocess_output": False if args.keep_silences else None,
         }
     )
     print(json.dumps(dataclasses.asdict(result), indent=2, ensure_ascii=False, default=str))
