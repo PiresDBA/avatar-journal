@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>O Livro do Avatar que Fala — manual ilustrado</title>
+<style>
+  :root{
+    --ink: var(--foreground, #14161a);
+    --paper: var(--card, #ffffff);
+    --soft: var(--secondary, #f1f3f6);
+    --line: var(--border, #d9dee6);
+    --accent: var(--accent, #2f6fed);
+    --accent-soft: var(--accent-surface, #e8effd);
+    --warn: var(--warning, #d98a00);
+    --warn-soft: var(--warning-surface, #fff4e0);
+    --good: var(--success, #17865b);
+    --good-soft: var(--success-surface, #e6f6ef);
+    --bad: var(--destructive, #c2372f);
+    --bad-soft: var(--destructive-surface, #fdecea);
+    --c1: var(--chart-1, #4f7cf7);
+    --c2: var(--chart-2, #e0a11a);
+    --c3: var(--chart-3, #17a08b);
+    --c4: var(--chart-4, #b461d6);
+    --c5: var(--chart-5, #e0614f);
+    --radius: var(--radius, 14px);
+    --mono: var(--font-mono, ui-monospace, "Cascadia Code", Consolas, monospace);
+    --sans: var(--font-sans, "Segoe UI", system-ui, sans-serif);
+  }
+  *{ box-sizing: border-box; }
+  html, body { background: transparent; }
+  body{
+    margin:0; color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  .book{ width:100%; max-width:880px; margin:0 auto; }
+
+  /* ---------- capa ---------- */
+  .cover{
+    position:relative; overflow:hidden;
+    padding:44px 26px 40px; border-radius:calc(var(--radius) * 2);
+    background:
+      radial-gradient(120% 90% at 12% 0%, color-mix(in srgb, var(--c1) 26%, transparent), transparent 60%),
+      radial-gradient(100% 80% at 92% 8%, color-mix(in srgb, var(--c2) 24%, transparent), transparent 62%),
+      var(--soft);
+    border:1px solid var(--line);
+  }
+  .cover .kicker{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    font-weight:700; color:var(--accent);
+    background:var(--paper); border:1px solid var(--line);
+    padding:6px 12px; border-radius:999px;
+  }
+  .cover h1{
+    font-size:clamp(30px, 6.4vw, 52px); line-height:1.05; margin:18px 0 10px;
+    letter-spacing:-.02em;
+  }
+  .cover h1 em{ font-style:normal; color:var(--accent); }
+  .cover p.lead{ font-size:clamp(15px, 2.4vw, 19px); max-width:56ch; margin:0 0 22px; color:var(--ink); opacity:.85; }
+  .badges{ display:flex; flex-wrap:wrap; gap:10px; }
+  .badge{
+    display:flex; align-items:center; gap:8px;
+    background:var(--paper); border:1px solid var(--line);
+    border-radius:999px; padding:8px 14px; font-size:13.5px; font-weight:600;
+  }
+  .dot{ width:10px; height:10px; border-radius:50%; background:var(--c1); flex:0 0 auto; }
+  .dot.g{ background:var(--good); } .dot.y{ background:var(--c2); } .dot.p{ background:var(--c4); }
+
+  /* ---------- capítulos ---------- */
+  section.chapter{ margin:52px 0 0; }
+  .chapter-head{ display:flex; gap:14px; align-items:flex-start; margin-bottom:6px; }
+  .chnum{
+    flex:0 0 auto; width:46px; height:46px; border-radius:14px;
+    display:grid; place-items:center; font-weight:800; font-size:20px;
+    color:#fff; background:var(--c1);
+    box-shadow:0 6px 0 color-mix(in srgb, var(--c1) 45%, #000 10%);
+  }
+  .chnum.c2{ background:var(--c3); box-shadow:0 6px 0 color-mix(in srgb, var(--c3) 45%, #000 10%); }
+  .chnum.c3{ background:var(--c2); box-shadow:0 6px 0 color-mix(in srgb, var(--c2) 45%, #000 10%); }
+  .chnum.c4{ background:var(--c4); box-shadow:0 6px 0 color-mix(in srgb, var(--c4) 45%, #000 10%); }
+  .chnum.c5{ background:var(--c5); box-shadow:0 6px 0 color-mix(in srgb, var(--c5) 45%, #000 10%); }
+  h2{ font-size:clamp(22px, 3.6vw, 30px); line-height:1.15; margin:0 0 4px; letter-spacing:-.01em; }
+  .sub{ margin:0 0 18px; color:var(--ink); opacity:.7; font-size:15px; }
+  h3{ font-size:18px; margin:26px 0 10px; }
+  p{ margin:0 0 14px; }
+  strong{ font-weight:750; }
+
+  .card{
+    background:var(--paper); border:1px solid var(--line);
+    border-radius:var(--radius); padding:20px;
+  }
+  .card.soft{ background:var(--soft); }
+  .card + .card{ margin-top:14px; }
+
+  .callout{
+    display:flex; gap:12px; padding:16px 18px; border-radius:var(--radius);
+    border:1px solid var(--line); background:var(--accent-soft);
+    border-left:5px solid var(--accent);
+  }
+  .callout .ic{ flex:0 0 auto; font-weight:800; }
+  .callout.warn{ background:var(--warn-soft); border-left-color:var(--warn); }
+  .callout.good{ background:var(--good-soft); border-left-color:var(--good); }
+  .callout.bad{ background:var(--bad-soft); border-left-color:var(--bad); }
+  .callout p:last-child{ margin-bottom:0; }
+
+  /* ---------- estações ---------- */
+  .stations{ display:grid; gap:12px; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); }
+  .station{
+    position:relative; background:var(--paper); border:1px solid var(--line);
+    border-radius:var(--radius); padding:18px 18px 18px 18px;
+  }
+  .station .top{ display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .station .num{
+    width:28px; height:28px; border-radius:10px; display:grid; place-items:center;
+    font-size:13px; font-weight:800; color:#fff; background:var(--accent);
+  }
+  .station h4{ margin:0; font-size:15.5px; }
+  .station p{ margin:0; font-size:14px; opacity:.82; }
+  .station .tag{
+    position:absolute; top:14px; right:14px; font-size:10.5px; letter-spacing:.08em;
+    text-transform:uppercase; font-weight:800; color:var(--accent);
+  }
+
+  /* ---------- fluxo ---------- */
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:16px 0 4px; }
+  .flow .chip{
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:8px 12px; font-size:13px; font-weight:650;
+  }
+  .flow .chip.hot{ border-color:color-mix(in srgb, var(--c5) 60%, var(--line)); background:color-mix(in srgb, var(--c5) 12%, var(--paper)); }
+  .flow .arrow{ opacity:.4; font-weight:800; }
+
+  /* ---------- comparação ---------- */
+  .duel{ display:grid; gap:14px; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); }
+  .side{ border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; background:var(--paper); }
+  .side header{ padding:12px 16px; font-weight:800; font-size:14px; display:flex; justify-content:space-between; align-items:center; }
+  .side.w header{ background:color-mix(in srgb, var(--bad) 12%, var(--paper)); color:color-mix(in srgb, var(--bad) 80%, var(--ink)); }
+  .side.l header{ background:color-mix(in srgb, var(--good) 14%, var(--paper)); color:color-mix(in srgb, var(--good) 80%, var(--ink)); }
+  .side .body{ padding:16px; }
+  .side ul{ margin:0; padding-left:18px; font-size:14px; }
+  .side li{ margin-bottom:7px; }
+
+  /* ---------- demo de pixels ---------- */
+  .pixels{ display:grid; gap:14px; grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); align-items:start; }
+  .pixbox{ background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:14px; text-align:center; }
+  .face{
+    width:100%; aspect-ratio:1/1; border-radius:12px; overflow:hidden; position:relative;
+    display:grid; place-items:center; background:var(--soft);
+  }
+  .face svg{ width:100%; height:100%; display:block; }
+  .face.blur-96 svg{ filter:blur(4.2px) saturate(.94); }
+  .face.blur-512 svg{ filter:blur(0.35px); }
+  .face.blur-both svg{ filter:none; }
+  .pixbox .cap{ font-size:13px; margin-top:10px; font-weight:650; }
+  .pixbox .meter{ height:6px; border-radius:99px; background:var(--soft); margin-top:8px; overflow:hidden; }
+  .pixbox .meter i{ display:block; height:100%; border-radius:99px; }
+  .pixbox .note{ font-size:12.5px; opacity:.7; margin-top:6px; }
+
+  /* ---------- tabelas ---------- */
+  .tbl{ width:100%; border-collapse:separate; border-spacing:0; font-size:13.5px; }
+  .tbl th, .tbl td{ text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  .tbl th{ font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; opacity:.7; }
+  .tbl tr:last-child td{ border-bottom:0; }
+  .tbl code{ font-family:var(--mono); font-size:12.5px; background:var(--soft); padding:2px 6px; border-radius:6px; }
+  .tablewrap{ overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--paper); }
+
+  code, pre{ font-family:var(--mono); }
+  pre{
+    background:var(--code-background, #11141a); color:var(--code-foreground, #e6ebf5);
+    padding:14px 16px; border-radius:12px; overflow-x:auto; font-size:12.7px; line-height:1.55;
+    margin:10px 0 0; border:1px solid color-mix(in srgb, var(--line) 40%, transparent);
+  }
+  pre .c{ color:#8fa3c4; }
+  pre .k{ color:#ffd479; }
+
+  /* ---------- receitas ---------- */
+  .recipes{ display:grid; gap:14px; grid-template-columns:repeat(auto-fit, minmax(270px, 1fr)); }
+  .recipe{ background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:18px; }
+  .recipe .sym{ display:flex; align-items:center; gap:10px; font-weight:800; font-size:15px; margin-bottom:10px; }
+  .recipe .sym .bubble{
+    width:34px; height:34px; border-radius:50%; display:grid; place-items:center;
+    background:var(--warn-soft); color:var(--warn); font-size:17px;
+  }
+  .recipe .row{ display:flex; gap:8px; font-size:13.5px; margin-bottom:8px; }
+  .recipe .row .lab{
+    flex:0 0 78px; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
+    font-weight:800; opacity:.6; padding-top:3px;
+  }
+  .recipe pre{ margin:0; font-size:12px; }
+
+  /* ---------- checklist ---------- */
+  .check{ list-style:none; margin:0; padding:0; display:grid; gap:10px; }
+  .check li{ display:flex; gap:12px; align-items:flex-start; background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:12px 14px; }
+  .check .box{
+    flex:0 0 auto; width:22px; height:22px; border-radius:7px; border:2px solid var(--good);
+    display:grid; place-items:center; color:var(--good); font-weight:900; font-size:13px; margin-top:1px;
+  }
+
+  .glossary{ display:grid; gap:10px; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); }
+  .glossary div{ background:var(--soft); border-radius:12px; padding:14px 16px; }
+  .glossary dt{ font-weight:800; font-size:14px; margin-bottom:3px; }
+  .glossary dd{ margin:0; font-size:13.5px; opacity:.8; }
+
+  .footer{ margin:56px 0 40px; text-align:center; font-size:13px; opacity:.6; }
+
+  .divider{ height:1px; background:var(--line); margin:34px 0; }
+  .mini{ font-size:12.5px; opacity:.68; }
+  .pill{ display:inline-block; font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; padding:3px 9px; border-radius:99px; }
+  .pill.g{ background:var(--good-soft); color:var(--good); }
+  .pill.b{ background:var(--bad-soft); color:var(--bad); }
+  .pill.y{ background:var(--warn-soft); color:var(--warn); }
+</style>
+</head>
+<body>
+<div class="book">
+
+  <!-- ================= CAPA ================= -->
+  <header class="cover">
+    <span class="kicker">Manual ilustrado · versão 2.4</span>
+    <h1>O Livro do<br><em>Avatar que Fala</em></h1>
+    <p class="lead">
+      Uma história em sete estações para entender por que a boca do apresentador às vezes fica
+      borrada, por que ela às vezes abre demais — e exatamente qual botão girar para consertar.
+      Sem pressa. Um desenho de cada vez.
+    </p>
+    <div class="badges">
+      <span class="badge"><i class="dot"></i> 100% no seu computador</span>
+      <span class="badge"><i class="dot g"></i> custo zero</span>
+      <span class="badge"><i class="dot y"></i> placa de 6 GB</span>
+      <span class="badge"><i class="dot p"></i> 18 segundos de vídeo</span>
+    </div>
+  </header>
+
+  <!-- ================= 1 ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <div class="chnum">1</div>
+      <div>
+        <h2>Dois artistas, uma boca</h2>
+        <p class="sub">A ideia inteira do programa cabe numa comparação.</p>
+      </div>
+    </div>
+
+    <p>
+      Imagine que a boca do apresentador precisa ser redesenhada para combinar com a fala.
+      Contratamos <strong>dois artistas</strong>. Eles não fazem a mesma coisa, e é aí que mora
+      todo o segredo do resultado.
+    </p>
+
+    <div class="duel">
+      <article class="side w">
+        <header><span>Artista 1 · Wav2Lip</span><span class="pill b">esboço</span></header>
+        <div class="body">
+          <p style="margin-top:0"><strong>Ele desenha num papelzinho de 96 quadradinhos.</strong></p>
+          <p>Depois, alguém pega esse papelzinho pequeno e <em>estica</em> até caber na tela grande.
+             O desenho do movimento fica certo… mas o traço fica grosso, a barba some e a pele
+             vira plástico.</p>
+          <p class="mini">Serve para dizer <strong>quando</strong> a boca abre e fecha. Não serve para
+             dizer <strong>como</strong> ela é.</p>
+        </div>
+      </article>
+
+      <article class="side l">
+        <header><span>Artista 2 · LivePortrait</span><span class="pill g">pintura final</span></header>
+        <div class="body">
+          <p style="margin-top:0"><strong>Ele trabalha em cima da foto original, bem grande.</strong></p>
+          <p>Ele olha o esboço do Artista 1 e move <em>apenas os lábios</em> da foto, num papel de
+             512 quadradinhos. Pele, barba, poros e tatuagem continuam sendo os de verdade.</p>
+          <p class="mini">É por isso que o vídeo com ele parece nítido — e o do outro não.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="callout good" style="margin-top:16px">
+      <span class="ic">✔</span>
+      <p><strong>Regra de ouro:</strong> o Artista 1 faz o <em>movimento</em>; o Artista 2 faz os
+         <em>pixels</em>. Se os pixels finais forem do Artista 1, o rosto fica “de cera”.</p>
+    </div>
+  </section>
+
+  <!-- ================= 2 ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <div class="chnum c2">2</div>
+      <div>
+        <h2>As sete estações do caminho</h2>
+        <p class="sub">Cada caixinha é um programa que roda na sua máquina, um depois do outro.</p>
+      </div>
+    </div>
+
+    <div class="flow">
+      <span class="chip">1 · voz clonada</span><span class="arrow">→</span>
+      <span class="chip">2 · plano do avatar</span><span class="arrow">→</span>
+      <span class="chip">3 · montagem</span><span class="arrow">→</span>
+      <span class="chip hot">4 · Wav2Lip</span><span class="arrow">→</span>
+      <span class="chip hot">5 · LivePortrait</span><span class="arrow">→</span>
+      <span class="chip">6 · colagem só da boca</span><span class="arrow">→</span>
+      <span class="chip">7 · render</span>
+    </div>
+
+    <div class="stations" style="margin-top:16px">
+      <div class="station">
+        <span class="tag">estação 1</span>
+        <div class="top"><span class="num">1</span><h4>Voz clonada</h4></div>
+        <p>O texto vira áudio com a voz do apresentador (VoiceStudio, porta <strong>3900</strong>).
+           Sai um arquivo limpo, sem música, com a duração exata do vídeo.</p>
+      </div>
+      <div class="station">
+        <span class="tag">estação 2</span>
+        <div class="top"><span class="num">2</span><h4>Plano do avatar</h4></div>
+        <p>Um arquivo de texto diz quem aparece, onde e quando:
+           <code>tela cheia</code>, <code>painel dividido</code> ou <code>só gráfico</code>.</p>
+      </div>
+      <div class="station">
+        <span class="tag">estação 3</span>
+        <div class="top"><span class="num">3</span><h4>Montagem</h4></div>
+        <p>Os clipes são cortados nos tamanhos certos: <strong>1080×1920</strong> inteiro ou
+           <strong>1080×864</strong> para o painel de baixo.</p>
+      </div>
+      <div class="station">
+        <span class="tag">estação 4</span>
+        <div class="top"><span class="num">4</span><h4>Wav2Lip</h4></div>
+        <p>Faz o esboço da boca. Roda num processo separado por pedaço de vídeo, para a memória
+           da placa não encher. O resultado é <strong>mudo</strong>.</p>
+      </div>
+      <div class="station">
+        <span class="tag">estação 5</span>
+        <div class="top"><span class="num">5</span><h4>LivePortrait</h4></div>
+        <p>Copia só o movimento dos lábios do esboço e redesenha na imagem nítida. É aqui que o
+           rosto volta a ter textura.</p>
+      </div>
+      <div class="station">
+        <span class="tag">estação 6</span>
+        <div class="top"><span class="num">6</span><h4>Colagem só da boca</h4></div>
+        <p>O programa recorta uma elipse suave em volta da boca e usa o desenho do LivePortrait
+           apenas ali. Todo o resto do rosto permanece o original.</p>
+      </div>
+      <div class="station">
+        <span class="tag">estação 7</span>
+        <div class="top"><span class="num">7</span><h4>Render</h4></div>
+        <p>Junta vídeo + áudio + gráficos + legendas e confere quatro portões de qualidade antes
+           de exportar o MP4.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 3 ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <div class="chnum c3">3</div>
+      <div>
+        <h2>Por que a imagem “estraga” com o Wav2Lip</h2>
+        <p class="sub">Este é o capítulo que responde à sua pergunta principal.</p>
+      </div>
+    </div>
+
+    <p>
+      Não é compressão, não é bitrate, não é a placa. É <strong>tamanho de papel</strong>.
+      O Wav2Lip desenha a boca dentro de uma caixinha pequena e o programa estica essa caixinha
+      até o tamanho do rosto na tela. Esticar não inventa detalhe: só engrossa o traço.
+    </p>
+
+    <div class="pixels">
+      <div class="pixbox">
+        <div class="face blur-96">
+          <svg viewBox="0 0 120 120" aria-label="rosto borrado">
+            <rect width="120" height="120" fill="#c9d6ea"/>
+            <ellipse cx="60" cy="62" rx="34" ry="42" fill="#e8bfa0"/>
+            <path d="M22 44q38 -30 76 0q-6 -34 -38 -34q-32 0 -38 34" fill="#2b2f3a"/>
+            <circle cx="46" cy="56" r="4" fill="#2b2f3a"/><circle cx="74" cy="56" r="4" fill="#2b2f3a"/>
+            <path d="M40 78q20 14 40 0q-20 22 -40 0" fill="#8d3b3b"/>
+            <path d="M44 74q16 8 32 0" stroke="#3a2a25" stroke-width="3" fill="none"/>
+          </svg>
+        </div>
+        <div class="cap">Wav2Lip · boca em 96</div>
+        <div class="meter"><i style="width:24%; background:var(--bad)"></i></div>
+        <div class="note">24% da nitidez original</div>
+      </div>
+
+      <div class="pixbox">
+        <div class="face blur-512">
+          <svg viewBox="0 0 120 120" aria-label="rosto nitido">
+            <rect width="120" height="120" fill="#c9d6ea"/>
+            <ellipse cx="60" cy="62" rx="34" ry="42" fill="#e8bfa0"/>
+            <path d="M22 44q38 -30 76 0q-6 -34 -38 -34q-32 0 -38 34" fill="#2b2f3a"/>
+            <circle cx="46" cy="56" r="4" fill="#2b2f3a"/><circle cx="74" cy="56" r="4" fill="#2b2f3a"/>
+            <path d="M40 78q20 14 40 0q-20 22 -40 0" fill="#8d3b3b"/>
+            <path d="M44 74q16 8 32 0" stroke="#3a2a25" stroke-width="3" fill="none"/>
+            <g fill="#3a2a25" opacity=".55">
+              <circle cx="40" cy="70" r="1"/><circle cx="46" cy="72" r="1"/><circle cx="52" cy="70.5" r="1"/>
+              <circle cx="58" cy="72" r="1"/><circle cx="64" cy="70.5" r="1"/><circle cx="70" cy="72" r="1"/>
+              <circle cx="76" cy="70" r="1"/><circle cx="43" cy="90" r="1"/><circle cx="50" cy="92" r="1"/>
+              <circle cx="57" cy="93" r="1"/><circle cx="64" cy="92" r="1"/><circle cx="71" cy="90" r="1"/>
+            </g>
+          </svg>
+        </div>
+        <div class="cap">LivePortrait · boca em 512</div>
+        <div class="meter"><i style="width:78%; background:var(--warn)"></i></div>
+        <div class="note">78% — bom, mas ainda macio</div>
+      </div>
+
+      <div class="pixbox">
+        <div class="face blur-both">
+          <svg viewBox="0 0 120 120" aria-label="rosto nitido com boca nitida">
+            <rect width="120" height="120" fill="#c9d6ea"/>
+            <ellipse cx="60" cy="62" rx="34" ry="42" fill="#e8bfa0"/>
+            <path d="M22 44q38 -30 76 0q-6 -34 -38 -34q-32 0 -38 34" fill="#2b2f3a"/>
+            <circle cx="46" cy="56" r="4" fill="#2b2f3a"/><circle cx="74" cy="56" r="4" fill="#2b2f3a"/>
+            <path d="M40 78q20 14 40 0q-20 22 -40 0" fill="#8d3b3b"/>
+            <path d="M44 74q16 8 32 0" stroke="#3a2a25" stroke-width="3" fill="none"/>
+            <g fill="#3a2a25" opacity=".75">
+              <circle cx="40" cy="70" r="1.1"/><circle cx="46" cy="72" r="1.1"/><circle cx="52" cy="70.5" r="1.1"/>
+              <circle cx="58" cy="72" r="1.1"/><circle cx="64" cy="70.5" r="1.1"/><circle cx="70" cy="72" r="1.1"/>
+              <circle cx="76" cy="70" r="1.1"/><circle cx="43" cy="90" r="1.1"/><circle cx="50" cy="92" r="1.1"/>
+              <circle cx="57" cy="93" r="1.1"/><circle cx="64" cy="92" r="1.1"/><circle cx="71" cy="90" r="1.1"/>
+            </g>
+            <ellipse cx="60" cy="82" rx="24" ry="15" fill="none" stroke="var(--c3)" stroke-dasharray="4 3" stroke-width="1.6"/>
+            <text x="60" y="112" text-anchor="middle" font-size="7" fill="var(--c3)">elipse da boca</text>
+          </svg>
+        </div>
+        <div class="cap">Colagem: fonte + boca</div>
+        <div class="meter"><i style="width:97%; background:var(--good)"></i></div>
+        <div class="note">~100% do rosto original</div>
+      </div>
+    </div>
+
+    <div class="callout warn" style="margin-top:18px">
+      <span class="ic">!</span>
+      <p><strong>Números do seu vídeo:</strong> a metade superior do rosto (onde nada se mexe)
+         tinha nitidez <strong>92</strong> com o LivePortrait no quadro inteiro, contra
+         <strong>207</strong> da imagem original. Com a colagem só da boca, voltou para
+         <strong>204–218</strong>. A boca borrada do Wav2Lip sozinho ficava em <strong>24%</strong>.</p>
+    </div>
+
+    <h3>E a “boca estranha”?</h3>
+    <p>
+      Três coisas diferentes produzem a sensação de boca errada. Vale separar, porque cada uma
+      tem um botão próprio:
+    </p>
+    <div class="tablewrap" style="margin-top:12px">
+      <table class="tbl">
+        <thead><tr><th>O que você vê</th><th>Causa de verdade</th><th>Botão</th></tr></thead>
+        <tbody>
+          <tr><td>Rosto liso, “de plástico” enquanto fala</td><td>os pixels finais ainda são do Wav2Lip</td><td><code>composite</code> ligado + LivePortrait</td></tr>
+          <tr><td>Boca abre demais / exagerada</td><td>o LivePortrait amplifica o movimento que recebe</td><td><code>--driving-multiplier</code></td></tr>
+          <tr><td>Boca atrasada ou adiantada</td><td>o filtro do LivePortrait adiciona ~4 quadros</td><td><code>--drive-shift-frames</code></td></tr>
+          <tr><td>Boca “mole”, sem forma de vogal</td><td>o esboço do Wav2Lip é genérico</td><td>driving em alta + fonte melhor</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= 4 ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <div class="chnum c4">4</div>
+      <div>
+        <h2>O mapa do tesouro: onde tudo fica</h2>
+        <p class="sub">Os programas rodam “por fora”, cada um na sua pasta. O manual chama cada um pelo nome.</p>
+      </div>
+    </div>
+
+    <div class="tablewrap">
+      <table class="tbl">
+        <thead><tr><th>Peça</th><th>Onde fica</th><th>Para que serve</th></tr></thead>
+        <tbody>
+          <tr><td>Wav2Lip</td><td><code>D:\Utilitarios\Wav2Lip</code></td><td>faz o esboço da boca (checkpoint <code>wav2lip_gan.pth</code>)</td></tr>
+          <tr><td>LivePortrait</td><td><code>D:\Utilitarios\LivePortrait</code></td><td>redesenha a boca na imagem nítida</td></tr>
+          <tr><td>Python do Wav2Lip</td><td><code>D:\Comfy\ComfyUI\venv\Scripts\python.exe</code></td><td>tem o PyTorch com CUDA</td></tr>
+          <tr><td>Python de trabalho</td><td><code>...\Programs\Python\Python312\python.exe</code></td><td>roda a colagem e as medições</td></tr>
+          <tr><td>ffmpeg</td><td><code>D:\Utilitarios\ffmpeg\bin</code></td><td>corta, junta e converte vídeo/áudio</td></tr>
+          <tr><td>VoiceStudio</td><td><code>http://127.0.0.1:3900</code></td><td>voz clonada (precisa estar aberto)</td></tr>
+          <tr><td>VoiceCraft</td><td><code>http://127.0.0.1:8090</code></td><td>ponte opcional para a voz</td></tr>
+          <tr><td>Clipes do apresentador</td><td><code>D:\PROJETOS-IA\AVATAR</code></td><td>vídeos/fotos originais, de onde tudo nasce</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="margin-top:16px">
+      <span class="ic">i</span>
+      <p>Se você mudar alguma pasta de lugar, não precisa editar o programa: passe o caminho na
+         hora de rodar, por exemplo <code>--wav2lip-dir "E:\IA\Wav2Lip"</code> ou
+         <code>--liveportrait-dir "E:\IA\LivePortrait"</code>.</p>
+    </div>
+
+    <h3>O plano do avatar é a partitura</h3>
+    <p>
+      Um único arquivo, <code>avatar_plan.json</code>, decide a coreografia. Cada linha é um
+      pedaço do vídeo:
+    </p>
+<pre><span class="c">// cada pedaço diz: de quando até quando, que layout, que clipe</span>
+{ <span class="k">"id"</span>: "seg_2_headline_split",
+  <span class="k">"start"</span>: 2.5, <span class="k">"end"</span>: 6.0,
+  <span class="k">"mode"</span>: "split",        <span class="c">// tela cheia = full_avatar</span>
+  <span class="k">"clip"</span>: "speaking",     <span class="c">// speaking | pointing | idle</span>
+  <span class="k">"lip_sync"</span>: true }      <span class="c">// false = boca parada (hold neutro)</span></pre>
+  </section>
+
+  <!-- ================= 5 ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <div class="chnum c5">5</div>
+      <div>
+        <h2>Receitas: “está assim, o que eu giro?”</h2>
+        <p class="sub">Seis cartões de cozinha. Cada um tem o sintoma, o ingrediente e o comando.</p>
+      </div>
+    </div>
+
+    <div class="recipes">
+      <article class="recipe">
+        <div class="sym"><span class="bubble">1</span> A boca abre demais</div>
+        <div class="row"><span class="lab">Sintoma</span><span>parece que ele está gritando numa conversa normal.</span></div>
+        <div class="row"><span class="lab">Gire</span><span>o ganho da boca para baixo: <strong>0,7</strong> (1,0 é o máximo e exagera).</span></div>
+<pre>--driving-multiplier 0.7</pre>
+      </article>
+
+      <article class="recipe">
+        <div class="sym"><span class="bubble">2</span> A boca chega atrasada</div>
+        <div class="row"><span class="lab">Sintoma</span><span>o som vem e a boca abre um instante depois.</span></div>
+        <div class="row"><span class="lab">Gire</span><span>o adiantamento do esboço: <strong>5 quadros</strong> ≈ 0,17 s.</span></div>
+<pre>--drive-shift-frames 5</pre>
+      </article>
+
+      <article class="recipe">
+        <div class="sym"><span class="bubble">3</span> O rosto fica liso ao falar</div>
+        <div class="row"><span class="lab">Sintoma</span><span>nitidez ótima no silêncio e “plástico” na fala.</span></div>
+        <div class="row"><span class="lab">Gire</span><span>ligue a colagem só da boca (é o padrão) e confira o relatório.</span></div>
+<pre>--mouth-sharpen 0.35
+<span class="c"># e confirme "mouth_composite": true</span></pre>
+      </article>
+
+      <article class="recipe">
+        <div class="sym"><span class="bubble">4</span> A elipse da boca aparece</div>
+        <div class="row"><span class="lab">Sintoma</span><span>dá para ver uma “máscara” em volta dos lábios.</span></div>
+        <div class="row"><span class="lab">Gire</span><span>mais suavidade na borda (feather) e menos nitidez forçada.</span></div>
+<pre>--mouth-feather 0.07
+--mouth-sharpen 0.2</pre>
+      </article>
+
+      <article class="recipe">
+        <div class="sym"><span class="bubble">5</span> A boca continua mexendo no fim</div>
+        <div class="row"><span class="lab">Sintoma</span><span>ele já terminou a frase e a boca segue animada.</span></div>
+        <div class="row"><span class="lab">Gire</span><span>o silêncio não fecha a boca sozinho: corte o bloco no fim da fala e use um <em>hold</em> neutro.</span></div>
+<pre>{ "id": "seg_8_closed_hold",
+  "start": 17.36, "end": 18.0,
+  "clip": "idle", "lip_sync": false,
+  "fade_in": 0.08 }</pre>
+      </article>
+
+      <article class="recipe">
+        <div class="sym"><span class="bubble">6</span> A voz fica sem vida</div>
+        <div class="row"><span class="lab">Sintoma</span><span>tudo emendado, sem respiro, sem pausa.</span></div>
+        <div class="row"><span class="lab">Gire</span><span>pausas em marcação e silêncio entre parágrafos.</span></div>
+<pre>[pause 350ms] Alerta dev: [emphasis]duas[/emphasis] viradas.
+--paragraph-gap-ms 700</pre>
+      </article>
+    </div>
+
+    <div class="callout warn" style="margin-top:16px">
+      <span class="ic">!</span>
+      <p><strong>Cuidado com marcações:</strong> o que o motor não conhece, ele <em>fala</em>.
+         <code>[breath]</code> só funciona no CosyVoice 3; <code>[emotion:…]</code> só em
+         IndexTTS2/CosyVoice/VoxCPM2. Antes de gerar, pergunte ao programa:</p>
+      <pre style="margin-top:8px">python tools/voice_craft_tts.py --text "seu texto [breath] aqui" --lint-tags</pre>
+    </div>
+  </section>
+
+  <!-- ================= 6 ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <div class="chnum c2">6</div>
+      <div>
+        <h2>“Posso mandar um vídeo meu de referência?”</h2>
+        <p class="sub">Pode — mas cada artista aproveita a referência de um jeito diferente.</p>
+      </div>
+    </div>
+
+    <div class="duel">
+      <article class="side w">
+        <header><span>Wav2Lip e a sua referência</span><span class="pill b">não aprende</span></header>
+        <div class="body">
+          <p style="margin-top:0">Ele <strong>não estuda</strong> o seu vídeo para ficar melhor.
+             Ele só precisa de <em>um rosto</em> + <em>um áudio</em>. O seu vídeo serve apenas como
+             <strong>a foto que vai ser animada</strong>.</p>
+          <ul>
+            <li>vídeo mais nítido → esboço um pouco melhor</li>
+            <li>vídeo tremido/escuro → esboço pior</li>
+            <li>mais vídeos seus → <strong>nenhuma</strong> melhora</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="side l">
+        <header><span>LivePortrait e a sua referência</span><span class="pill g">usa de verdade</span></header>
+        <div class="body">
+          <p style="margin-top:0">Ele <strong>copia o movimento</strong> de um vídeo e aplica na
+             imagem. Então a referência entra em dois lugares:</p>
+          <ul>
+            <li><strong>imagem base</strong> (quem aparece) — quanto mais nítida e de frente, melhor;</li>
+            <li><strong>vídeo de movimento</strong> (como a boca se mexe) — hoje é o esboço do Wav2Lip.</li>
+          </ul>
+          <p class="mini">Trocar o vídeo de movimento por uma gravação sua falando <em>não resolve</em>
+             sozinho: o movimento precisa estar casado com a fala. O que ajuda é dar uma imagem base
+             melhor e um esboço mais preciso.</p>
+        </div>
+      </article>
+    </div>
+
+    <h3>O que realmente deixa a boca mais parecida</h3>
+    <div class="tablewrap">
+      <table class="tbl">
+        <thead><tr><th>Ajuste</th><th>Por que ajuda</th><th>Esforço</th></tr></thead>
+        <tbody>
+          <tr><td>Gravar a imagem base em 4K, de frente, luz suave</td><td>o rosto tem mais detalhe para o LivePortrait redesenhar</td><td>baixo</td></tr>
+          <tr><td>Esboço em alta (<code>resize_factor 1</code>)</td><td>o Wav2Lip enxerga o rosto com o dobro de quadradinhos e acerta melhor o fechar dos lábios</td><td>tempo de GPU</td></tr>
+          <tr><td>Blocos de fala curtos (2–4 s)</td><td>menos oportunidade de o esboço “descolar” da fala</td><td>baixo</td></tr>
+          <tr><td><code>--driving-multiplier</code> entre 0.7 e 0.85</td><td>tira o exagero sem perder articulação</td><td>baixo</td></tr>
+          <tr><td>Pausas no texto (<code>[pause]</code>)</td><td>dá à boca momentos reais de descanso</td><td>baixo</td></tr>
+          <tr><td>Modelo maior de boca (MuseTalk/LatentSync)</td><td>é o único caminho para “forma” de vogal mais rica</td><td><span class="pill b">não cabe em 6 GB</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout bad" style="margin-top:16px">
+      <span class="ic">×</span>
+      <p><strong>O que não funciona:</strong> empilhar vídeos de referência, aumentar bitrate do
+         render, trocar o codec, ou “treinar” o LivePortrait com a sua cara. Nada disso muda o
+         tamanho do papel onde a boca é desenhada.</p>
+    </div>
+  </section>
+
+  <!-- ================= 7 ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <div class="chnum c3">7</div>
+      <div>
+        <h2>A receita completa, do começo ao fim</h2>
+        <p class="sub">Cinco comandos. Rode um de cada vez e leia o que ele responde.</p>
+      </div>
+    </div>
+
+<pre><span class="c"># 1) voz clonada (o VoiceStudio precisa estar aberto)</span>
+python tools/voice_craft_tts.py --project ./project --scene 1 --voice Ale-empolgado
+
+<span class="c"># 2) montar os pedaços do apresentador conforme o plano</span>
+python tools/avatar_slot.py --project ./project \
+    --avatar-dir "D:/PROJETOS-IA/AVATAR" --plan project/artifacts/avatar_plan.json
+
+<span class="c"># 3) esboço da boca (Wav2Lip em alta)</span>
+python tools/avatar_lipsync.py --project ./project --apply
+
+<span class="c"># 4) pixels da boca (LivePortrait + colagem só da boca)</span>
+python tools/avatar_liveportrait.py --project ./project --apply \
+    --driving-multiplier 0.7 --drive-shift-frames 5
+
+<span class="c"># 5) conferir e exportar</span>
+cd project/hyperframes
+npx hyperframes lint --json
+npx hyperframes validate --json
+npx hyperframes inspect --json
+npx hyperframes render --strict</pre>
+
+    <h3>Se quiser só um pedaço</h3>
+    <p>Enquanto ajusta, não precisa refazer o vídeo todo. Use o nome do pedaço:</p>
+<pre>python tools/avatar_liveportrait.py --project ./project \
+    --only seg_4_data_split_point --force --apply</pre>
+
+    <h3>Como saber se ficou bom (sem achismo)</h3>
+    <p>Dois medidores olham o vídeo e devolvem número:</p>
+<pre>python tools/audit_lipsync.py    --project ./project   <span class="c"># nitidez do rosto</span>
+python tools/audit_lip_signal.py --project ./project   <span class="c"># atraso da boca, em ms</span></pre>
+    <p class="mini">
+      Referência do seu vídeo: nitidez do rosto <strong>0,75–0,80×</strong> da fonte (Wav2Lip puro
+      ficava em 0,23×) e atraso de boca em torno de <strong>70 ms</strong> (2 quadros).
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ================= CHECKLIST ================= -->
+  <section class="chapter" style="margin-top:0">
+    <h2 style="margin-bottom:14px">Antes de dizer “pronto”</h2>
+    <ul class="check">
+      <li><span class="box">✓</span><span>O último quadro tem <strong>boca fechada</strong> e olhos abertos?</span></li>
+      <li><span class="box">✓</span><span>O rosto é igualmente nítido <strong>falando</strong> e <strong>calado</strong>?</span></li>
+      <li><span class="box">✓</span><span>A boca abre na medida — sem gritar numa conversa normal?</span></li>
+      <li><span class="box">✓</span><span>Nenhuma marcação estranha foi <strong>falada em voz alta</strong>?</span></li>
+      <li><span class="box">✓</span><span>Os quatro portões passaram: <code>lint</code>, <code>validate</code>, <code>inspect</code>, <code>render --strict</code>?</span></li>
+      <li><span class="box">✓</span><span>O MP4 final tem 1080×1920, 18,000 s e áudio sem estouro?</span></li>
+      <li><span class="box">✓</span><span>Nada de mídia ou relatório foi parar no Git?</span></li>
+    </ul>
+  </section>
+
+  <!-- ================= GLOSSÁRIO ================= -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <div class="chnum c5">?</div>
+      <div>
+        <h2>Palavrinhas do ofício</h2>
+        <p class="sub">Para não se perder quando alguém falar difícil.</p>
+      </div>
+    </div>
+    <dl class="glossary">
+      <div><dt>Driving</dt><dd>O vídeo que “ensina” o movimento da boca. No seu caso, o resultado do Wav2Lip.</dd></div>
+      <div><dt>Resize factor</dt><dd>Quantas vezes o rosto é reduzido antes de desenhar a boca. 1 = maior e melhor; 2 = metade.</dd></div>
+      <div><dt>Composite</dt><dd>Colagem. Aqui: usar o LivePortrait só numa elipse da boca e manter o resto original.</dd></div>
+      <div><dt>Feather</dt><dd>A borda borradinha da elipse, que faz a colagem não aparecer.</dd></div>
+      <div><dt>Shift</dt><dd>Quantos quadros o esboço é adiantado para compensar o atraso do filtro.</dd></div>
+      <div><dt>Multiplier</dt><dd>O “volume” da abertura da boca. Acima de 1 exagera.</dd></div>
+      <div><dt>Hold neutro</dt><dd>Um retrato parado, de boca fechada, usado no fim para o apresentador “descansar”.</dd></div>
+      <div><dt>Gates</dt><dd>Os quatro portões de conferência antes de exportar.</dd></div>
+    </dl>
+  </section>
+
+  <p class="footer">
+    Manual ilustrado do avatar que fala · feito para ser lido devagar.<br>
+    Se algo aqui não bater com o que você vê na tela, o programa está certo — o manual é que precisa de uma página nova.
+  </p>
+</div>
+</body>
+</html>

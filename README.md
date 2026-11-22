@@ -129,6 +129,9 @@ sobe para 39–83 % (quase o dobro), com lag de 0–3 frames nos blocos centrais
 é gerado localmente (não versionado).
 Tabela completa e limitações da métrica: **[docs/SYNC-AUDIT.md](docs/SYNC-AUDIT.md)**.
 
+Manual ilustrado (livro, para ler devagar): **[docs/manual-visual.html](docs/manual-visual.html)** —
+abre no navegador, sem instalar nada.
+
 Detalhes, diagnóstico e comparação de motores: **[docs/HOWTO.md](docs/HOWTO.md)**.
 Arquitetura, orçamento de VRAM e decisões: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 Manual em português, sem jargão: **[docs/MANUAL_PT.md](docs/MANUAL_PT.md)**.
