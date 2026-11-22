@@ -57,6 +57,18 @@ python tools/avatar_liveportrait.py --project ./project --dry-run
 python tools/avatar_lipsync.py --project ./project --dry-run
 ```
 
+## Calibração (diagnóstico, não auto-tuner)
+
+```bash
+python tools/calibrate_lipsync.py --project ./project --dry-run   # mede e planeja
+python tools/calibrate_lipsync.py --project ./project --only seg_4_data_split_point --force
+```
+
+Ele mede atraso por onsets de palavra e abertura vs. a fonte e imprime o que mudaria. **Não use
+como piloto automático**: nos testes, os offsets variaram −120…+173 ms entre blocos vizinhos e as
+correções saturaram. Os valores de produção são fixos: `--drive-shift-frames 5`
+`--driving-multiplier 0.7`.
+
 ## Expressividade da voz (tags)
 
 A narração vai para o motor de TTS **verbatim**: tudo entre `[...]` chega ao modelo. O que cada

@@ -56,6 +56,7 @@ nada se move) caiu de nitidez 207 para 92. Três correções entraram por padrã
 | `composite_mouth` — fonte nítida em tudo, LivePortrait só numa elipse com feather na boca (+ unsharp 0.35) | metade superior volta a 204–218 (fonte 207) |
 | `--driving-multiplier 0.7` (era 1.0) | abertura labial vs fonte: 0.95 → 0.73 (sem perder articulação) |
 | `--drive-shift-frames 5` | o filtro temporal do LivePortrait adiciona ~4 frames; atraso por onsets de palavra: 206 ms → 73 ms |
+| Wav2Lip `resize_factor 1` (driving ~192 px, era 96) | movimento copiado menos borrado — é o *driving* que define a forma da boca |
 
 Resultado: nitidez de barba/poros igual falando e em silêncio, boca sem exagero e sincronia na
 faixa de 2 frames (66 ms).
@@ -80,6 +81,16 @@ A última palavra (“até amanhã!”) termina em **17,32 s**. O bloco de avata
   em relação ao take falado, medido por detecção de face);
 - retiming 0,78× + `tpad` para cobrir 0,64 s;
 - dissolve de 0,08 s (2–3 frames) e zoom 1,0→1,02 para não parecer congelado.
+
+### Auto-calibração: por que não está ligada
+
+`tools/calibrate_lipsync.py` mede o sinal de lábio (landmark 203 pts), calcula o atraso por
+onsets de palavra e a abertura vs. a fonte, e roda o LivePortrait com `--drive-shift-frames` e
+`--driving-multiplier` ajustados. Rodando nos 5 blocos, os offsets medidos variaram de **−120 ms
+a +173 ms entre blocos vizinhos** e as correções saturaram nos limites — o sensor (landmark sobre
+um recorte do detector de face) tem jitter suficiente para "consertar" blocos que estavam bons.
+Ficou como **ferramenta de diagnóstico**, não como auto-tuner: os valores usados são os
+constantes validados visualmente (shift 5 / 0,7).
 
 ## 5. Orçamento de VRAM (GTX 1060, 6144 MB)
 
@@ -110,6 +121,7 @@ relevantes para este repositório:
 - **d-015** — encerramento neutro com boca fechada.
 - **d-016** — Wav2Lip vira gerador de movimento; LivePortrait passa a gerar os pixels.
 - **d-017** — composite só-da-boca + `driving_multiplier 0.7` + `drive_shift_frames 5`.
+- **d-018** — driving em alta resolução; auto-calibração por bloco rejeitada como tuner (sensor instável).
 
 ## 8. Estrutura dos artefatos
 

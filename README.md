@@ -65,7 +65,9 @@ desenha a boca.
    elementos `<video>` na composição HyperFrames.
 4. **Movimento (Wav2Lip)** — `tools/avatar_lipsync.py` corta o slice do clipe fonte + o slice
    correspondente da narração e roda o Wav2Lip GAN **em processo novo por bloco** (CUDA é
-   liberada entre blocos). Saída muda em `assets/avatar/lipsync/<seg>.mp4`.
+   liberada entre blocos), com `resize_factor 1`: é o movimento desse clipe que o LivePortrait
+   copia, então vale pagar o dobro de tempo para ter o rosto a ~192 px em vez de 96. Saída muda
+   em `assets/avatar/lipsync/<seg>.mp4`.
    **Nunca vai para o vídeo final.**
 5. **Pixels (LivePortrait)** — `tools/avatar_liveportrait.py` usa o slice nítido como `-s` e o
    clipe do Wav2Lip como `-d`, com `--animation_region lip --flag_relative_motion

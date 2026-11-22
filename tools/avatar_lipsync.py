@@ -358,7 +358,7 @@ def lip_sync_project(args: argparse.Namespace) -> dict[str, Any]:
             results.append({"id": seg_id, "mode": mode, "status": "planned", "face_source": str(source)})
             continue
 
-        resize = args.resize_factor or (2 if mode == "full_avatar" else 1)
+        resize = args.resize_factor or 1  # 1 = HQ driving: the mouth motion is what LivePortrait copies
         raw_out = work_dir / f"{seg_id}.wav2lip.mp4"
         try:
             face, audio = prepare_block(
@@ -465,7 +465,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--python", default=None, help="Python with CUDA torch (default: ComfyUI venv, then Python312)")
     p.add_argument("--ffmpeg", default=None)
     p.add_argument("--fps", type=int, default=30)
-    p.add_argument("--resize-factor", type=int, default=0, help="0 = auto (2 full / 1 split)")
+    p.add_argument("--resize-factor", type=int, default=0, help="0 = auto (1 = HQ driving, the default)")
     p.add_argument("--wav2lip-batch", type=int, default=16)
     p.add_argument("--face-det-batch", type=int, default=4)
     p.add_argument("--max-vram-mb", type=int, default=6144, help="GTX 1060 budget")
