@@ -49,3 +49,55 @@ que o olho interpreta como falta de sincronia.
    audio→expressão (JoyVASA, MuseTalk) como gerador de driving melhoraria as vogais, mantendo
    o LivePortrait como camada de pixels.
 3. **Calibração fina** (`--driving-multiplier`, offset de ±1 frame) só faz sentido depois de (1).
+
+---
+
+## Protocolo de sincronia (o orçamento de erro)
+
+Atraso não é um erro único; é a soma de cinco, cada um com tamanho em ms:
+
+| Etapa | Contribuição | Natureza |
+|---|---|---|
+| Filtro temporal do LivePortrait | +133 ms (~4 quadros) | estrutural, compensável |
+| Enquadramento de mel do Wav2Lip | +70 ms | estrutural, compensável |
+| Compensação por corte de quadros (`--drive-shift-frames`) | −167 ms | compensa, mas quebra o movimento |
+| Granularidade de 1 quadro | ±33 ms | quantização |
+| Limite do plano fora da grade de 30 fps | ≤33 ms | geometria do plano |
+
+Medido após `--drive-shift-frames 5`: **73 ms** de atraso residual (faixa "visível").
+Meta prática: **|atraso| ≤ 33 ms** (1 quadro), que é o limiar de detecção (~40–45 ms).
+
+### Por que o shift por quadros é o elo fraco
+
+`-ss` descarta os primeiros N quadros do driving e `tpad=clone` repete o último N.
+Efeitos colaterais:
+
+- o primeiro fonema do bloco perde a forma da boca (movimento real jogado fora);
+- o fim do bloco fica congelado por N/fps (167 ms = 19 % de um bloco de 0,86 s);
+- a compensação só existe em múltiplos de 33 ms.
+
+### O que substitui
+
+Compensar **antes** do filtro, em milissegundos, com material real:
+
+- renderizar o driving na janela `[t0 − 203 ms, t1]`, usando a mesma faixa de voz
+  e o mesmo clipe-fonte (não um clone do último quadro);
+- consumir o driving a partir de `t0`.
+
+Assim não há quadro descartado nem congelado, e o atraso residual vai a ~0.
+
+### Cinco regras de aceitação
+
+1. Uma única faixa de áudio, fatiada em PCM. Nenhum reencode de AAC entre os cortes
+   (cada corte adiciona ~21 ms de padding invisível).
+2. Compensação em ms com janela real (acima). Nenhum quadro duplicado no fim do bloco.
+3. Terminar a fala ~200 ms antes do corte: RMS < −50 dB nos últimos 150 ms do bloco.
+4. Medir com envelope de energia **contra abertura de boca**, em trechos vozeados,
+   por correlação cruzada no bloco inteiro. Onset isolado oscilou −120…+173 ms entre
+   blocos vizinhos: é ruído do sensor, não do vídeo.
+5. Só depois julgar a forma da boca — e aceitar que forma é o limite do hardware.
+
+### O que continua fora de alcance
+
+Timing se resolve por engenharia. **Visema** (lábios colados em "pá", abertos em "pé")
+exige modelo maior; Wav2Lip em 6 GB entrega forma *plausível*, não *correta*.

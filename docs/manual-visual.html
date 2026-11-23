@@ -11,13 +11,15 @@
     --soft: var(--secondary, #f1f3f6);
     --line: var(--border, #d9dee6);
     --accent: var(--accent, #2f6fed);
-    --accent-soft: var(--accent-surface, #e8effd);
+    --accent-soft: color-mix(in srgb, var(--accent, #2f6fed) 14%, var(--paper));
     --warn: var(--warning, #d98a00);
-    --warn-soft: var(--warning-surface, #fff4e0);
+    /* tintas derivadas do papel: funcionam em tema claro e escuro
+       (as var --*-surface do host são transparentes em tema escuro) */
+    --warn-soft: color-mix(in srgb, var(--warning, #d98a00) 16%, var(--paper));
     --good: var(--success, #17865b);
-    --good-soft: var(--success-surface, #e6f6ef);
+    --good-soft: color-mix(in srgb, var(--success, #17865b) 16%, var(--paper));
     --bad: var(--destructive, #c2372f);
-    --bad-soft: var(--destructive-surface, #fdecea);
+    --bad-soft: color-mix(in srgb, var(--destructive, #c2372f) 16%, var(--paper));
     --c1: var(--chart-1, #4f7cf7);
     --c2: var(--chart-2, #e0a11a);
     --c3: var(--chart-3, #17a08b);
