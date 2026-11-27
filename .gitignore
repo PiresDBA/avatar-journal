@@ -32,6 +32,7 @@
 *.otf
 
 # Saidas do pipeline (relatorios, QA, renders, caches de inferencia)
+output/
 project/hyperframes/renders/
 project/hyperframes/assets/
 project/hyperframes/node_modules/
@@ -65,6 +66,8 @@ venv/
 secrets.json
 credentials.json
 token.json
+token*.json
+client_secret*.json
 service-account*.json
 *api_key*
 *apikey*

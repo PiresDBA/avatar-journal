@@ -90,6 +90,8 @@ def run_liveportrait(
     min_free_mb: int,
     vram_python: Path,
     timeout_s: int,
+    relative_motion: bool = True,
+    smooth_variance: float = 1e-10,
 ) -> dict[str, Any]:
     info = vram_info(vram_python)
     if not info.get("cuda"):
@@ -107,8 +109,9 @@ def run_liveportrait(
         "-d", str(driving.resolve()),
         "-o", str(out_dir.resolve()),
         "--animation_region", animation_region,
-        "--flag_relative_motion",
+        "--flag_relative_motion" if relative_motion else "--no_flag_relative_motion",
         "--flag_stitching",
+        "--driving_smooth_observation_variance", f"{smooth_variance:.2e}",
         "--source_max_dim", str(source_max_dim),
         "--driving_multiplier", f"{driving_multiplier:.3f}",
     ]
@@ -359,6 +362,8 @@ def lip_sync_project(args: argparse.Namespace) -> dict[str, Any]:
                 min_free_mb=args.min_free_mb,
                 vram_python=vram_python,
                 timeout_s=args.timeout_s,
+                relative_motion=not args.absolute_lip,
+                smooth_variance=args.smooth_variance,
             )
             raw = Path(meta["raw_output"])
             if not raw.is_file():
@@ -481,6 +486,10 @@ def build_parser() -> argparse.ArgumentParser:
                    help="Ganho do movimento labial vindo do driving (1.0 amplifica demais)")
     p.add_argument("--drive-shift-frames", type=int, default=0,
                    help="Avanca o driving N frames para compensar atraso do Wav2Lip")
+    p.add_argument("--absolute-lip", action="store_true",
+                   help="Usa --no_flag_relative_motion (evita subtrair driving[0] e vazar boca da fonte)")
+    p.add_argument("--smooth-variance", type=float, default=1e-10,
+                   help="Variancia do filtro Kalman do LivePortrait (padrao 1e-10 = sem atraso/borrao de silabas)")
     p.add_argument("--no-mouth-composite", action="store_true",
                    help="Desliga o blend so-da-boca (mantem o frame inteiro do LivePortrait)")
     p.add_argument("--mouth-sharpen", type=float, default=0.35,

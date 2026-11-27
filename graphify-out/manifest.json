@@ -1,0 +1,278 @@
+{
+  "project/avatar_plan.example.json": {
+    "mtime": 1795337795.5438485,
+    "seen": 1795630561.6352282,
+    "ast_hash": "0c135074508769ee75ef8612cc0cb161",
+    "semantic_hash": ""
+  },
+  "project/pauta.example.json": {
+    "mtime": 1795468437.632798,
+    "seen": 1795630561.6352484,
+    "ast_hash": "9a43ad1155d4b6120797e016214e3bd0",
+    "semantic_hash": ""
+  },
+  "tools/audit_lip_signal.py": {
+    "mtime": 1795346368.8772457,
+    "seen": 1795630561.6352599,
+    "ast_hash": "bee17710c81cf9f8c95257498c6bafff",
+    "semantic_hash": ""
+  },
+  "tools/audit_lipsync.py": {
+    "mtime": 1795338181.3806274,
+    "seen": 1795630561.6352696,
+    "ast_hash": "23d8177d34d4d24058154522f9f72947",
+    "semantic_hash": ""
+  },
+  "tools/avatar_lipsync.py": {
+    "mtime": 1795351148.1694472,
+    "seen": 1795630561.6352792,
+    "ast_hash": "55226f9723784a7706088b6695c45060",
+    "semantic_hash": ""
+  },
+  "tools/avatar_liveportrait.py": {
+    "mtime": 1795516970.3868284,
+    "seen": 1795630561.6352892,
+    "ast_hash": "5d38d4c8972b6d13c7e5bc1310934334",
+    "semantic_hash": ""
+  },
+  "tools/avatar_slot.py": {
+    "mtime": 1795337794.1838036,
+    "seen": 1795630561.6353002,
+    "ast_hash": "a58d4ade7d5d40b83e6b8911c885a55b",
+    "semantic_hash": ""
+  },
+  "tools/base_tool.py": {
+    "mtime": 1795349599.1067424,
+    "seen": 1795630561.6353102,
+    "ast_hash": "407ff4865ee01fd15cf3a0485ee3ac07",
+    "semantic_hash": ""
+  },
+  "tools/calibrate_lipsync.py": {
+    "mtime": 1795369004.7352011,
+    "seen": 1795630561.6353192,
+    "ast_hash": "08b644353d6d0c9e4fd1c1c4c686a66b",
+    "semantic_hash": ""
+  },
+  "tools/pauta_to_plan.py": {
+    "mtime": 1795726544.6186118,
+    "seen": 1795727002.728262,
+    "ast_hash": "8dc4b2a5f143544c37d38ca71c10737b",
+    "semantic_hash": ""
+  },
+  "tools/query_animation_catalog.py": {
+    "mtime": 1795553063.567848,
+    "seen": 1795630561.6353385,
+    "ast_hash": "171e89fa1ad4caffd4e0331399d2b1eb",
+    "semantic_hash": ""
+  },
+  "tools/run_short.py": {
+    "mtime": 1795726516.224976,
+    "seen": 1795727002.7282827,
+    "ast_hash": "7f4a2c6cf2fd2ebc4859f56dcb5b5dfa",
+    "semantic_hash": ""
+  },
+  "tools/voice_craft_tts.py": {
+    "mtime": 1795726503.349867,
+    "seen": 1795727002.728292,
+    "ast_hash": "524828e0b172f76c7fe98fc7ff384964",
+    "semantic_hash": ""
+  },
+  ".agents/skills/jornalismo-ia-shorts-pro/SKILL.md": {
+    "mtime": 1795692111.6551182,
+    "seen": 1795697084.7376263,
+    "ast_hash": "e063ea832e0a2983d2487514f603c68b",
+    "semantic_hash": ""
+  },
+  "AGENTS.md": {
+    "mtime": 1795726598.5120504,
+    "seen": 1795727002.728354,
+    "ast_hash": "08098bb75d8d5046373ec92c36c3e235",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1795468565.8762784,
+    "seen": 1795630561.6353886,
+    "ast_hash": "c546357b166bfe6135cd5a8123e11e1f",
+    "semantic_hash": ""
+  },
+  "docs/ANIMATION_CONTRACT.md": {
+    "mtime": 1795704206.3585644,
+    "seen": 1795704425.7730744,
+    "ast_hash": "cc1d95d7239f609458bba4afe615d526",
+    "semantic_hash": ""
+  },
+  "docs/ARCHITECTURE.md": {
+    "mtime": 1795373925.2396948,
+    "seen": 1795630561.6354082,
+    "ast_hash": "39cbe897d56c972a41ba6ead8740eb17",
+    "semantic_hash": ""
+  },
+  "docs/HOWTO.md": {
+    "mtime": 1795468567.5227098,
+    "seen": 1795630561.6354175,
+    "ast_hash": "6189b3eb2a19cf4e7c21a6a297ad04cc",
+    "semantic_hash": ""
+  },
+  "docs/MANUAL_PT.md": {
+    "mtime": 1795349641.8814938,
+    "seen": 1795630561.635427,
+    "ast_hash": "3aa3345233035355c2c029020bf96c12",
+    "semantic_hash": ""
+  },
+  "docs/SYNC-AUDIT.md": {
+    "mtime": 1795407768.865707,
+    "seen": 1795630561.635437,
+    "ast_hash": "dbdcd3c8121553efc8021afb73ad919e",
+    "semantic_hash": ""
+  },
+  "docs/manual-visual.html": {
+    "mtime": 1795407702.7611616,
+    "seen": 1795630561.6354463,
+    "ast_hash": "590c023fcd73147aa70e1a3ef238b4f5",
+    "semantic_hash": ""
+  },
+  "project/hyperframes/DESIGN.md": {
+    "mtime": 1795337798.868878,
+    "seen": 1795630561.6354575,
+    "ast_hash": "8783eb010ddec1ee521031ff67df3c2e",
+    "semantic_hash": ""
+  },
+  "project/hyperframes/compositions/captions.html": {
+    "mtime": 1795349599.371836,
+    "seen": 1795630561.635467,
+    "ast_hash": "f73f2fc897ed3b2e843874a0ad4994a0",
+    "semantic_hash": ""
+  },
+  "project/hyperframes/compositions/chrome-pip.html": {
+    "mtime": 1795349599.3834386,
+    "seen": 1795630561.635476,
+    "ast_hash": "5cef307db7a1a027bdb9b3da9749b7e1",
+    "semantic_hash": ""
+  },
+  "project/hyperframes/compositions/scene-1-alerta.html": {
+    "mtime": 1795349599.3929634,
+    "seen": 1795630561.6354854,
+    "ast_hash": "4d2fe9c324bde34421ff51fc4a43942b",
+    "semantic_hash": ""
+  },
+  "project/hyperframes/compositions/scene-2-dados.html": {
+    "mtime": 1795349599.4016104,
+    "seen": 1795630561.6354957,
+    "ast_hash": "1cdd523b8670ce3eb758086525bce8fe",
+    "semantic_hash": ""
+  },
+  "project/hyperframes/compositions/scene-3-agentes.html": {
+    "mtime": 1795349599.42269,
+    "seen": 1795630561.635505,
+    "ast_hash": "86764ab430195fe3c3ad6906a4af6fb8",
+    "semantic_hash": ""
+  },
+  "project/hyperframes/compositions/scene-3-terminal-full.html": {
+    "mtime": 1795349599.4467556,
+    "seen": 1795630561.635514,
+    "ast_hash": "b080c4ff71c16e2d0f12ffc11be97e83",
+    "semantic_hash": ""
+  },
+  "project/hyperframes/index.html": {
+    "mtime": 1795349599.6293046,
+    "seen": 1795630561.6355236,
+    "ast_hash": "a9abaf443b693d8d82582d45df390d79",
+    "semantic_hash": ""
+  },
+  "tools/audit_layout_fill.py": {
+    "mtime": 1795653228.710716,
+    "seen": 1795654136.886852,
+    "ast_hash": "00096e1ef0306cabe17dc840f9e8f9db",
+    "semantic_hash": ""
+  },
+  "data/published_history.json": {
+    "mtime": 1795716402.1268227,
+    "seen": 1795716508.402257,
+    "ast_hash": "d19c8f7c96bf880b8f5e6cd829c57dc9",
+    "semantic_hash": ""
+  },
+  "tools/editorial/__init__.py": {
+    "mtime": 1795694271.1853952,
+    "seen": 1795697084.737354,
+    "ast_hash": "9f893f0f07ad07c303596d040aaad4b0",
+    "semantic_hash": ""
+  },
+  "tools/editorial/creative_brief.py": {
+    "mtime": 1795697026.144492,
+    "seen": 1795697084.7373617,
+    "ast_hash": "ff064fdbcd38299c59a1f07cf75e7b2c",
+    "semantic_hash": ""
+  },
+  "tools/editorial/discover.py": {
+    "mtime": 1795694335.121019,
+    "seen": 1795697084.737369,
+    "ast_hash": "477dc9eb9d94d3c07df59cb860a19fcd",
+    "semantic_hash": ""
+  },
+  "tools/editorial/env_loader.py": {
+    "mtime": 1795694272.624523,
+    "seen": 1795697084.7373767,
+    "ast_hash": "ff406fa9213d4208c2221a1a09882515",
+    "semantic_hash": ""
+  },
+  "tools/editorial/export_pauta.py": {
+    "mtime": 1795697028.5032682,
+    "seen": 1795697084.7373848,
+    "ast_hash": "8124526ad8da3af66353d27127aa21d6",
+    "semantic_hash": ""
+  },
+  "tools/editorial/fact_checker.py": {
+    "mtime": 1795694338.0760221,
+    "seen": 1795697084.7373915,
+    "ast_hash": "e85ea17fca4b45a835ff605320b5e2fa",
+    "semantic_hash": ""
+  },
+  "tools/editorial/memory_store.py": {
+    "mtime": 1795694276.083908,
+    "seen": 1795697084.737536,
+    "ast_hash": "006c443b691dc850f022d09962e375ea",
+    "semantic_hash": ""
+  },
+  "tools/editorial/programs.py": {
+    "mtime": 1795694846.9014761,
+    "seen": 1795697084.7375479,
+    "ast_hash": "ee7f6be7b3378cc0a9559ba7611bd2d5",
+    "semantic_hash": ""
+  },
+  "tools/editorial/semantic_dedup.py": {
+    "mtime": 1795695113.2281358,
+    "seen": 1795697084.7375548,
+    "ast_hash": "1842206167828350fb2ae5d77aac83b2",
+    "semantic_hash": ""
+  },
+  "tools/editorial_chief.py": {
+    "mtime": 1795694343.671964,
+    "seen": 1795697084.737561,
+    "ast_hash": "a4b7db292777cc02e2bd9e4a86d20d28",
+    "semantic_hash": ""
+  },
+  "tools/editorial_memory.py": {
+    "mtime": 1795694403.6469917,
+    "seen": 1795697084.737567,
+    "ast_hash": "725358c26feba8b7d56b3d0f4096cfbc",
+    "semantic_hash": ""
+  },
+  "tools/youtube_publish.py": {
+    "mtime": 1795692033.155833,
+    "seen": 1795697084.7376122,
+    "ast_hash": "d7cbb45b2d321c98395fcd566d37b432",
+    "semantic_hash": ""
+  },
+  ".agents/skills/ai-editorial-chief/SKILL.md": {
+    "mtime": 1795716007.6568437,
+    "seen": 1795716508.4024248,
+    "ast_hash": "8ca13a55d1e095a4c5d6aba059f9a2c8",
+    "semantic_hash": ""
+  },
+  "tools/voicestudio_tts.py": {
+    "mtime": 1795726903.913064,
+    "seen": 1795727002.7283008,
+    "ast_hash": "ccb32090c561d74e31c8f45062157cc6",
+    "semantic_hash": ""
+  }
+}

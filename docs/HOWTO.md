@@ -17,6 +17,22 @@ Os caminhos podem ser trocados por flag (`--wav2lip-dir`, `--liveportrait-dir`,
 
 ## Ordem de execução
 
+### Modo rápido a partir do `pauta.json` (skill `jornalismo-ia-shorts-pro`)
+
+```bash
+# Simular todo o fluxo (valida pauta.json, fatia blocos <= 6s, faz lint de tags)
+python tools/run_short.py \
+    --pauta project/pauta.example.json --short short_01 \
+    --project ./project --avatar-dir "D:/PROJETOS-IA/AVATAR" --dry-run
+
+# Rodar ponta-a-ponta (voz -> slot -> Wav2Lip -> LivePortrait -> gates -> render -> auditoria)
+python tools/run_short.py \
+    --pauta output/YYYY-MM-DD/pauta.json --short short_01 \
+    --project ./project --avatar-dir "D:/PROJETOS-IA/AVATAR" --voice Ale-empolgado --audit
+```
+
+### Passo a passo manual
+
 ```bash
 # 0) plano: copie o exemplo e edite
 mkdir -p project/artifacts

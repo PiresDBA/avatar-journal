@@ -85,6 +85,28 @@ desenha a boca.
 
 ---
 
+## Ponto de partida editorial (`jornalismo-ia-shorts-pro`)
+
+A skill **[.agents/skills/jornalismo-ia-shorts-pro/SKILL.md](.agents/skills/jornalismo-ia-shorts-pro/SKILL.md)**
+está unida ao programa como ponto de partida ponta-a-ponta (pesquisa verificada → `pauta.json` →
+produção dinâmica em 18s–60s):
+
+```bash
+# 1) converter um Short do pauta.json em avatar_plan.json + voiceover.txt + lint de tags
+python tools/pauta_to_plan.py --pauta project/pauta.example.json --short short_01 --project ./project
+
+# 2) simular ou rodar o pipeline completo a partir do pauta.json
+python tools/run_short.py --pauta project/pauta.example.json --short short_01 \
+    --project ./project --avatar-dir "D:/PROJETOS-IA/AVATAR" --dry-run
+```
+
+A integração **soma sem subtrair**: usa o motor local `avatar-journal` por padrão (alternando
+`full_avatar`, `split`, `full_graphics`/`broll` e `closed_hold`, com blocos ≤ 6 s na GTX 1060) e
+preserva ganchos aditivos para **Blender 4.x** (`blender_top.mov` com Alpha no topo), **Reallusion**
+(iClone/AccuLips) e **Remotion/OpenMontage**.
+
+---
+
 ## Uso rápido
 
 ```bash
@@ -141,8 +163,10 @@ Manual em português, sem jargão: **[docs/MANUAL_PT.md](docs/MANUAL_PT.md)**.
 ## Estrutura
 
 ```
-tools/                        programa: slot · lipsync · liveportrait · tts · auditoria
+.agents/skills/               skill jornalismo-ia-shorts-pro (ponto de partida editorial + producao)
+tools/                        programa: pauta_to_plan · run_short · slot · lipsync · liveportrait · tts · auditoria
                               (audit_lipsync: pixels/nitidez · audit_lip_signal: landmarks/sincronia)
+project/pauta.example.json    exemplo de pauta.json (Shorts 18s e 60s)
 project/avatar_plan.example.json   configuracao de exemplo (copie para project/artifacts/)
 project/hyperframes/          template da composicao (index.html + compositions)
 docs/                         arquitetura, how-to, auditoria, manual

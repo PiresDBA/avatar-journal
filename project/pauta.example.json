@@ -1,0 +1,154 @@
+{
+  "date": "2026-11-23",
+  "mode": "daily",
+  "avatar_engine_default": "avatar-journal",
+  "compositor_default": "hyperframes",
+  "shorts": [
+    {
+      "id": "short_01",
+      "category": "Modelos Frontier",
+      "headline": "2 viradas em IA mudam seu codigo",
+      "duration_seconds": 18.0,
+      "visual_concept": "Manchete cinetica escura -> comparativo numerico animado -> terminal autonomo em alto contraste",
+      "facts": [
+        {
+          "claim": "Exemplo de fato 1: janela de contexto de 1M tokens e ganho de velocidade (dados ilustrativos do prototipo).",
+          "metrics": "1M tokens, +30% velocidade, US$ 8 / US$ 40 por 1M",
+          "source_name": "Prototipo Boletim IA Dev",
+          "source_url": null
+        },
+        {
+          "claim": "Exemplo de fato 2: agente de codigo com alto desempenho e fracao do custo (dados ilustrativos do prototipo).",
+          "metrics": "96% performance, 5% custo",
+          "source_name": "Prototipo Boletim IA Dev",
+          "source_url": null
+        }
+      ],
+      "assets": {
+        "img_01": {
+          "type": "generated",
+          "url_or_prompt": "Clean dark graphite editorial backdrop for kinetic typography, no text",
+          "local_path": "short_01/img_01.png"
+        },
+        "img_02": {
+          "type": "generated",
+          "url_or_prompt": "Warm light-gray minimalist editorial card grid for terminal comparison, no text",
+          "local_path": "short_01/img_02.png"
+        },
+        "ref_video_url": null
+      },
+      "optional_engines": {
+        "blender_top": null,
+        "reallusion_avatar": null,
+        "remotion_props": null
+      },
+      "voiceover": {
+        "text": "[pause 250ms] Alerta dev: duas viradas em IA mudam seu codigo hoje. Primeiro, contexto de um milhao de tokens com trinta por cento mais velocidade. Segundo, agentes autonomos rodando por uma fracao do custo. [pause 200ms] Eu sou o Ale, ate amanha!",
+        "word_count": 43,
+        "blocks": [
+          {
+            "time": "00:00-00:02.5",
+            "role": "gancho",
+            "mode": "full_avatar",
+            "visual_cue": "abertura_tela_cheia_avatar"
+          },
+          {
+            "time": "00:02.5-00:06",
+            "role": "manchete",
+            "mode": "split",
+            "visual_cue": "img_01 + manchete + selo_fonte"
+          },
+          {
+            "time": "00:06-00:09.5",
+            "role": "dado_1_respiro",
+            "mode": "full_graphics",
+            "visual_cue": "grafico_dados_tela_cheia"
+          },
+          {
+            "time": "00:09.5-00:12",
+            "role": "dado_1_destaque",
+            "mode": "split",
+            "visual_cue": "avatar_apontando + comparativo"
+          },
+          {
+            "time": "00:12-00:14.5",
+            "role": "dado_2_terminal",
+            "mode": "full_graphics",
+            "visual_cue": "terminal_autonomo_tela_cheia"
+          },
+          {
+            "time": "00:14.5-00:16.5",
+            "role": "dado_2_tradeoff",
+            "mode": "split",
+            "visual_cue": "img_02 + resumo_custo"
+          },
+          {
+            "time": "00:16.5-00:18",
+            "role": "fechamento",
+            "mode": "full_avatar",
+            "visual_cue": "fechamento_avatar + hold_neutro"
+          }
+        ]
+      }
+    },
+    {
+      "id": "short_02",
+      "category": "Open-Weight/Local",
+      "headline": "Exemplo de Short 60s com fatiamento automatico para GTX 1060",
+      "duration_seconds": 60.0,
+      "visual_concept": "Paralaxe editorial + grafico comparativo de VRAM + cena Blender 3D opcional no topo",
+      "facts": [
+        {
+          "claim": "Short de exemplo no formato 60s original da skill para validar o fatiamento automatico em blocos <= 6s.",
+          "metrics": null,
+          "source_name": "Exemplo de Estrutura",
+          "source_url": null
+        }
+      ],
+      "assets": {
+        "img_01": {
+          "type": "generated",
+          "url_or_prompt": "Clean dark technical workstation backdrop, soft rim light, no text",
+          "local_path": "short_02/img_01.png"
+        },
+        "img_02": {
+          "type": "generated",
+          "url_or_prompt": "Minimalist GPU architecture schematic style backdrop, no text",
+          "local_path": "short_02/img_02.png"
+        },
+        "ref_video_url": null
+      },
+      "optional_engines": {
+        "blender_top": "short_02/blender_top.mov",
+        "reallusion_avatar": null,
+        "remotion_props": null
+      },
+      "voiceover": {
+        "text": "[pause 300ms] Este e um roteiro modelo de sessenta segundos no formato classico da skill jornalismo-ia-shorts-pro. No gancho inicial, o apresentador entra em tela cheia para segurar a atencao. [pause 300ms] Na primeira bloco de dados, o layout abre em tela dividida com graficos ou cena Blender no topo e o avatar animado embaixo, fatiado automaticamente em segmentos curtos para nao estourar a memoria da placa de video. [pause 300ms] No meio do video, o avatar sai de cena para os dados respirarem em tela cheia antes de voltar no comparativo de trade-offs. [pause 250ms] No fechamento, ele retorna em tela cheia, conclui a ideia e encerra com boca fechada no hold neutro.",
+        "word_count": 118,
+        "blocks": [
+          {
+            "time": "00:00-00:05",
+            "role": "gancho",
+            "visual_cue": "img_01 + manchete + selo_fonte"
+          },
+          {
+            "time": "00:05-00:25",
+            "role": "dado_1",
+            "visual_cue": "animacao_sobre_img_01_ou_pip"
+          },
+          {
+            "time": "00:25-00:45",
+            "role": "dado_2_tradeoff",
+            "visual_cue": "transicao_img_02 + animacao_3d"
+          },
+          {
+            "time": "00:45-01:00",
+            "role": "fechamento",
+            "visual_cue": "resumo_2_linhas + selo_fonte"
+          }
+        ]
+      }
+    }
+  ]
+}

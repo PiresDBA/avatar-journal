@@ -1,0 +1,334 @@
+{
+  "version": 1,
+  "channel": {
+    "title": "AI Journal 4 ALL",
+    "handle": "@ai-journal-4-all",
+    "id": "UCs45csxXA-jEQke_i2Lozxw"
+  },
+  "videos": [
+    {
+      "video_id": "bY8sFgNhWHw",
+      "published_at": "2026-11-25",
+      "url": "https://youtube.com/shorts/bY8sFgNhWHw",
+      "title": "10 novidades de IA em 60 segundos: GPT-6.2, Gemini 4, Claude Fable e mais #Shorts",
+      "file": "output/2026-11-25/short_giro_60s_atelier/final_short_giro_60s_atelier.mp4",
+      "visual_style": {
+        "name": "Atelier Broadcast 2D + 1x Blender Bar Chart",
+        "family": "editorial-cards-2d",
+        "engines": [
+          "hyperframes-canvas",
+          "blender-5.3",
+          "lemo-opuscar"
+        ],
+        "materials": [
+          "obsidian-card",
+          "warm-paper",
+          "metallic-bars"
+        ],
+        "opus5_refs": []
+      },
+      "lessons_learned": "Boa base de conteúdo e ritmo de 60s, mas excesso de cards 2D chapados com pouco 3D real; precisa de mais profundidade, câmera 3D e exploração do Blender + catálogo de 703 prompts.",
+      "topics": [
+        {
+          "slug": "openai-gpt-6-2-astra-sol",
+          "title": "OpenAI lança GPT-6.2 Astra/Sol (-50% na API)",
+          "entity": "OpenAI GPT-6.2 Astra Sol",
+          "keywords": [
+            "gpt-6.2",
+            "astra",
+            "sol",
+            "openai",
+            "api -50%"
+          ]
+        },
+        {
+          "slug": "google-gemini-4-neon",
+          "title": "Google responde com Gemini 4 Neon ($3 / $15)",
+          "entity": "Google Gemini 4 Neon",
+          "keywords": [
+            "gemini 4",
+            "neon",
+            "google",
+            "$3/$15"
+          ]
+        },
+        {
+          "slug": "anthropic-claude-fable-5-2",
+          "title": "Anthropic lança Claude Fable 5.2 (1M tokens)",
+          "entity": "Anthropic Claude Fable 5.2",
+          "keywords": [
+            "claude fable",
+            "fable 5.2",
+            "anthropic",
+            "1m tokens"
+          ]
+        },
+        {
+          "slug": "openai-gpt-6-cyber",
+          "title": "OpenAI libera GPT-6-Cyber para vulnerabilidades",
+          "entity": "OpenAI GPT-6-Cyber",
+          "keywords": [
+            "gpt-6-cyber",
+            "ciberdefesa",
+            "vulnerabilidades",
+            "openai"
+          ]
+        },
+        {
+          "slug": "shellbench-agent-failures",
+          "title": "ShellBench: agentes falham em mais de 1/3 das tarefas reais",
+          "entity": "ShellBench",
+          "keywords": [
+            "shellbench",
+            "benchmark",
+            "agentes falham",
+            "terminal"
+          ]
+        },
+        {
+          "slug": "agents-reviewing-agent-code-47pct",
+          "title": "47% já usam agentes para revisar código de agentes",
+          "entity": "Agent Code Review 47%",
+          "keywords": [
+            "47%",
+            "revisar codigo de agentes",
+            "code review agentes"
+          ]
+        },
+        {
+          "slug": "google-stitch-loop",
+          "title": "Google Stitch Loop monitora sites e abre PRs",
+          "entity": "Google Stitch Loop",
+          "keywords": [
+            "stitch loop",
+            "google stitch",
+            "monitora sites",
+            "prs"
+          ]
+        },
+        {
+          "slug": "deepmind-gemini-robotics-2-5-genie-4",
+          "title": "DeepMind lança Gemini Robotics 2.5 + Genie 4",
+          "entity": "DeepMind Gemini Robotics 2.5 Genie 4",
+          "keywords": [
+            "gemini robotics 2.5",
+            "genie 4",
+            "deepmind",
+            "robotica"
+          ]
+        },
+        {
+          "slug": "openai-amd-rtl-optimization",
+          "title": "OpenAI otimiza RTL da AMD (+14% PPA)",
+          "entity": "OpenAI AMD RTL",
+          "keywords": [
+            "amd rtl",
+            "+14% ppa",
+            "openai amd",
+            "design chips"
+          ]
+        },
+        {
+          "slug": "stm32cube-ai-agents-mcu",
+          "title": "STM32Cube leva agentes a microcontroladores",
+          "entity": "STM32Cube AI",
+          "keywords": [
+            "stm32cube",
+            "stm32",
+            "microcontroladores",
+            "embedded"
+          ]
+        }
+      ]
+    },
+    {
+      "video_id": "8vCg2RN5Ucg",
+      "published_at": "2026-11-26",
+      "url": "https://youtube.com/shorts/8vCg2RN5Ucg",
+      "title": "10 projetos novos do GitHub que bombaram em IA (60s) #Shorts",
+      "file": "output/2026-11-25/short_github_10_v2/final_short_github_10_v2.mp4",
+      "visual_style": {
+        "name": "Cinema 3D V2 Hibrido Documental",
+        "family": "hybrid-blender-threejs-glass-cards",
+        "engines": [
+          "blender-5.3",
+          "threejs-webgl",
+          "glsl",
+          "avatar-v17c-70-30"
+        ],
+        "materials": [
+          "tilted-doc-monitor",
+          "neon-floor-grid",
+          "matte-metal",
+          "emissive-rings"
+        ],
+        "opus5_refs": [
+          "lukasersil-726495",
+          "mdaman010-111079"
+        ]
+      },
+      "lessons_learned": "Direção geral e formato documental aprovados, mas efeitos 3D ainda crus: esfera central do super-agente (cena 03) parecia facetada/chapada por excesso de emissão e falta de iluminação/reflexo real. Próximos vídeos devem explorar iluminação de 3 pontos, HDRI/ambiente refletivo, subdivisão alta/Shade Smooth, materiais finos (vidro, espelho/cromo, PBR) e variar o estilo visual a cada episódio consultando o usuário antes.",
+      "topics": [
+        {
+          "slug": "storytold-craft-anything",
+          "title": "storytold/craft-anything: engenharia reversa para agentes",
+          "entity": "storytold/craft-anything",
+          "keywords": [
+            "craft-anything",
+            "storytold",
+            "engenharia reversa",
+            "blueprints"
+          ]
+        },
+        {
+          "slug": "graphify-labs-graphify",
+          "title": "Graphify-Labs/graphify: grafo de memória persistente",
+          "entity": "Graphify-Labs/graphify",
+          "keywords": [
+            "graphify",
+            "graphify-labs",
+            "grafo de memoria",
+            "contexto"
+          ]
+        },
+        {
+          "slug": "deepseek-dsh-superagent-prototype",
+          "title": "deepseek-ai/dsh-superagent-prototype: super-agente em múltiplos loops",
+          "entity": "deepseek-ai/dsh-superagent-prototype",
+          "keywords": [
+            "dsh-superagent-prototype",
+            "dsh-superagent",
+            "deepseek",
+            "multiplos loops"
+          ]
+        },
+        {
+          "slug": "vercel-labs-agent-desktop",
+          "title": "vercel-labs/agent-desktop: ambiente local para depurar agentes",
+          "entity": "vercel-labs/agent-desktop",
+          "keywords": [
+            "agent-desktop",
+            "vercel-labs",
+            "depurar agentes",
+            "tool calls"
+          ]
+        },
+        {
+          "slug": "pingdotgg-t3code",
+          "title": "pingdotgg/t3code: controle o terminal pelo celular",
+          "entity": "pingdotgg/t3code",
+          "keywords": [
+            "t3code",
+            "pingdotgg",
+            "terminal celular",
+            "claude remote"
+          ]
+        },
+        {
+          "slug": "hkuds-cli-anything",
+          "title": "HKUDS/CLI-Anything: apps desktop viram CLI nativa",
+          "entity": "HKUDS/CLI-Anything",
+          "keywords": [
+            "cli-anything",
+            "hkuds",
+            "blender cli",
+            "gimp cli"
+          ]
+        },
+        {
+          "slug": "perplexityai-bumblebee",
+          "title": "PerplexityAI/bumblebee: auditoria de servidores MCP",
+          "entity": "PerplexityAI/bumblebee",
+          "keywords": [
+            "bumblebee",
+            "perplexityai",
+            "auditoria mcp",
+            "servidores mcp"
+          ]
+        },
+        {
+          "slug": "elementalsouls-claude-bughunter",
+          "title": "elementalsouls/Claude-BugHunter: 80+ skills e 24 classes red-team",
+          "entity": "elementalsouls/Claude-BugHunter",
+          "keywords": [
+            "claude-bughunter",
+            "bughunter",
+            "elementalsouls",
+            "red-team"
+          ]
+        },
+        {
+          "slug": "alibaba-open-code-review",
+          "title": "alibaba/open-code-review: corta falsos positivos no PR",
+          "entity": "alibaba/open-code-review",
+          "keywords": [
+            "open-code-review",
+            "alibaba",
+            "code review",
+            "falsos positivos"
+          ]
+        },
+        {
+          "slug": "jingyaogong-minimind",
+          "title": "jingyaogong/minimind: treine IA de 64M do zero em 1 GPU",
+          "entity": "jingyaogong/minimind",
+          "keywords": [
+            "minimind",
+            "jingyaogong",
+            "64m parametros",
+            "llm do zero"
+          ]
+        }
+      ]
+    },
+    {
+      "video_id": "IpibpCkqm60",
+      "published_at": "2026-11-26",
+      "url": "https://youtube.com/shorts/IpibpCkqm60",
+      "title": "2 agentes de IA open source que pesquisam e operam por você (GPT-Researcher + Skyvern) #Shorts",
+      "file": "d:\\Utilitarios\\avatar-journal\\output\\2026-11-26\\short_ia_que_faz_chrome\\final_short_ia_que_faz_chrome.mp4",
+      "visual_style": {
+        "name": "Espelho & Cromo Liquido (Blender HDRI)",
+        "family": "blender-mirror-chrome-hdri",
+        "engines": [
+          "blender-5.3",
+          "hyperframes",
+          "avatar-v17c-70-30"
+        ],
+        "materials": [
+          "obsidian-mirror-floor",
+          "liquid-chrome-96x48",
+          "dark-glass-terminal"
+        ],
+        "opus5_refs": []
+      },
+      "lessons_learned": "Avatar piscou em excesso durante a fala porque avatar_base_1080x576_30fps.mp4 tem 5.0s (150 quadros) com multiplas piscadas em loop; ajustar para no maximo 1 piscada natural a cada 4.5-5.0s antes dos proximos Shorts.",
+      "topics": [
+        {
+          "slug": "assafelovic-gpt-researcher",
+          "title": "assafelovic/gpt-researcher: agente autônomo de pesquisa profunda (30,9k ★, Apache-2.0, MCP)",
+          "entity": "assafelovic/gpt-researcher",
+          "keywords": [
+            "gpt-researcher",
+            "deep-research",
+            "mcp",
+            "langgraph",
+            "apache-2.0"
+          ]
+        },
+        {
+          "slug": "skyvern-ai-skyvern",
+          "title": "Skyvern-AI/skyvern: automação visual de navegador (23,5k ★, AGPL-3.0, 85,8% WebVoyager)",
+          "entity": "Skyvern-AI/skyvern",
+          "keywords": [
+            "skyvern",
+            "browser-automation",
+            "webvoyager",
+            "planner-actor-validator",
+            "agpl-3.0"
+          ]
+        }
+      ]
+    }
+  ]
+}
